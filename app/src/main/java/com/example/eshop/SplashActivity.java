@@ -13,7 +13,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sphlash);
         SystemClock.sleep(3000);
-        Intent loginIntent = new Intent(SplashActivity.this,LoginActivity.class);
+        Intent loginIntent = new Intent(SplashActivity.this,RegisterActivity.class);
         startActivity(loginIntent);
         finish();
     }

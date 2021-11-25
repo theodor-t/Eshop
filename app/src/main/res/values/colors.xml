@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#CE0000</color>
     <color name="colorPrimaryDark">#CE0000</color>
+    <color name="btnRed">#9f0000</color>
 </resources>
