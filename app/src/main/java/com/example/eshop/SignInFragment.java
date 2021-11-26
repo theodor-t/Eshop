@@ -39,6 +39,8 @@ public class SignInFragment extends Fragment {
     private TextView dontHaveAnAccount;
     private FrameLayout parentFrameLayout;
 
+    private TextView forgotPassword;
+
     private ProgressBar progressBar;
 
     private EditText email;
@@ -58,6 +60,8 @@ public class SignInFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
         dontHaveAnAccount = view.findViewById(R.id.tv_dont_have_an_account);
         parentFrameLayout = getActivity().findViewById(R.id.register_framelayout);
+
+        forgotPassword = view.findViewById(R.id.sign_in_forgot_password);
 
         progressBar = view.findViewById(R.id.sign_in_progressbar);
         progressBar.setVisibility(View.GONE);
@@ -81,6 +85,14 @@ public class SignInFragment extends Fragment {
                 setFragment(new SignUpFragment());
             }
         });
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFragment(new ResetPasswordFragment());
+            }
+        });
+
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
