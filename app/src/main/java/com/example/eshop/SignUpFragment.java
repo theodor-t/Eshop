@@ -1,7 +1,9 @@
 package com.example.eshop;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -69,8 +72,10 @@ public class SignUpFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         alreadyHaveAnAccount = view.findViewById(R.id.tv_already_have_an_account);
-
         parentFrameLayout = getActivity().findViewById(R.id.register_framelayout);
+
+        progressBar = view.findViewById(R.id.sign_up_progressbar);
+        progressBar.setVisibility(View.GONE);
 
         email = view.findViewById(R.id.sign_up_email);
         fullName = view.findViewById(R.id.sign_up_full_name);
@@ -79,9 +84,6 @@ public class SignUpFragment extends Fragment {
 
         closeBtn = view.findViewById(R.id.sign_up_close_btn);
         signUpBtn = view.findViewById(R.id.sign_up_btn);
-
-        progressBar = view.findViewById(R.id.sign_up_progressbar);
-        progressBar.setVisibility(View.GONE);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -95,6 +97,12 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 setFragment(new SignInFragment());
+            }
+        });
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainIntent();
             }
         });
 
@@ -229,9 +237,7 @@ public class SignUpFragment extends Fragment {
                                                @Override
                                                public void onComplete(@NonNull Task<DocumentReference> task) {
                                                    if (task.isSuccessful()){
-                                                       Intent mainIntent = new Intent(getActivity(),MainActivity.class);
-                                                       startActivity(mainIntent);
-                                                       getActivity().finish();
+                                                        mainIntent();
                                                    }else{
                                                        progressBar.setVisibility(View.GONE);
                                                        signUpBtn.setEnabled(true);
@@ -242,9 +248,6 @@ public class SignUpFragment extends Fragment {
                                                }
                                            });
 
-                                   Intent mainIntent = new Intent(getActivity(),MainActivity.class);
-                                   startActivity(mainIntent);
-                                   getActivity().finish();
                                }else{
                                    progressBar.setVisibility(View.GONE);
                                    signUpBtn.setEnabled(true);
@@ -263,4 +266,10 @@ public class SignUpFragment extends Fragment {
         }
 
     }
+    private void mainIntent(){
+        Intent mainIntent = new Intent(getActivity(),MainActivity.class);
+        startActivity(mainIntent);
+        getActivity().finish();
+    }
+
 }
