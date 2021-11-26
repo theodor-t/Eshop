@@ -35,7 +35,7 @@ public class SignInFragment extends Fragment {
         dontHaveAnAccount = view.findViewById(R.id.tv_dont_have_an_account);
         parentFrameLayout = getActivity().findViewById(R.id.register_framelayout);
 
-        progressBar = view.findViewById(R.id.sign_up_progressbar);
+        progressBar = view.findViewById(R.id.sign_in_progressbar);
         progressBar.setVisibility(View.GONE);
         return view;
     }
