@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -24,6 +25,8 @@ public class SignInFragment extends Fragment {
     private TextView dontHaveAnAccount;
     private FrameLayout parentFrameLayout;
 
+    private ProgressBar progressBar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -31,6 +34,9 @@ public class SignInFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
         dontHaveAnAccount = view.findViewById(R.id.tv_dont_have_an_account);
         parentFrameLayout = getActivity().findViewById(R.id.register_framelayout);
+
+        progressBar = view.findViewById(R.id.sign_up_progressbar);
+        progressBar.setVisibility(View.GONE);
         return view;
     }
 
