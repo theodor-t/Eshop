@@ -29,6 +29,7 @@
         <item name="android:windowBackground">@drawable/splash_activity_background</item>
 
     </style>
+
     <style name="RedProgressBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
@@ -44,4 +45,13 @@
         <item name="android:windowBackground">@drawable/splash_activity_background</item>
 
     </style>
+
+    <style name="Theme.Eshop.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Eshop.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Eshop.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
