@@ -110,19 +110,19 @@ public class ResetPasswordFragment extends Fragment {
                 progressBar.setVisibility(View.VISIBLE);
 
                 resetPasswordBtn.setEnabled(false);
-                resetPasswordBtn.setTextColor(Color.argb(50,255,255,255));
+                resetPasswordBtn.setTextColor(Color.argb(50, 255, 255, 255));
 
                 firebaseAuth.sendPasswordResetEmail(registeredEmail.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    ScaleAnimation scaleAnimation = new ScaleAnimation(1,0,1,0,emailIcon.getWidth()/2,emailIcon.getHeight()/2);
+                                if (task.isSuccessful()) {
+                                    ScaleAnimation scaleAnimation = new ScaleAnimation(1, 0, 1, 0, emailIcon.getWidth() / 2, emailIcon.getHeight() / 2);
                                     scaleAnimation.setDuration(100);
                                     scaleAnimation.setInterpolator(new AccelerateInterpolator());
                                     scaleAnimation.setRepeatMode(Animation.REVERSE);
                                     scaleAnimation.setRepeatCount(1);
-                                    scaleAnimation.setAnimationListener(new Animation.AnimationListener(){
+                                    scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
 
                                         @Override
                                         public void onAnimationStart(Animation animation) {
@@ -145,11 +145,11 @@ public class ResetPasswordFragment extends Fragment {
                                         }
                                     });
                                     emailIcon.startAnimation(scaleAnimation);
-                                }else{
+                                } else {
                                     String error = task.getException().getMessage();
 
                                     resetPasswordBtn.setEnabled(true);
-                                    resetPasswordBtn.setTextColor(Color.rgb(255,255,255));
+                                    resetPasswordBtn.setTextColor(Color.rgb(255, 255, 255));
 
                                     emailIconText.setText(error);
                                     emailIconText.setTextColor(getResources().getColor(R.color.purple_500));
@@ -172,19 +172,21 @@ public class ResetPasswordFragment extends Fragment {
         });
 
     }
-    private void checkInputs(){
-        if (TextUtils.isEmpty(registeredEmail.getText())){
+
+    private void checkInputs() {
+        if (TextUtils.isEmpty(registeredEmail.getText())) {
             resetPasswordBtn.setEnabled(false);
-            resetPasswordBtn.setTextColor(Color.argb(50,255,255,255));
-        }else{
+            resetPasswordBtn.setTextColor(Color.argb(50, 255, 255, 255));
+        } else {
             resetPasswordBtn.setEnabled(true);
-            resetPasswordBtn.setTextColor(Color.rgb(255,255,255));
+            resetPasswordBtn.setTextColor(Color.rgb(255, 255, 255));
         }
     }
+
     private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.slide_from_left,R.anim.slideout_from_right);
-        fragmentTransaction.replace(parentFrameLayout.getId(),fragment);
+        fragmentTransaction.setCustomAnimations(R.anim.slide_from_left, R.anim.slideout_from_right);
+        fragmentTransaction.replace(parentFrameLayout.getId(), fragment);
         fragmentTransaction.commit();
     }
 }
