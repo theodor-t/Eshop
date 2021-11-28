@@ -181,6 +181,28 @@ public class HomeFragment extends Fragment {
         horizontalProductScrollAdapter.notifyDataSetChanged();
         ////////////////// Horizontal Product Layout
 
+        ////////////////////////////////
+        RecyclerView testing = view.findViewById(R.id.testing);
+        LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
+        testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        testing.setLayoutManager(testingLayoutManager);
+
+        List<HomePageModel> homePageModelList = new ArrayList<>();
+        homePageModelList.add(new HomePageModel(1,R.drawable.stripadd,"#ff0000"));
+        homePageModelList.add(new HomePageModel(0,sliderModelList));
+        homePageModelList.add(new HomePageModel(0,sliderModelList));
+        homePageModelList.add(new HomePageModel(1,R.drawable.stripadd,"#000000"));
+        homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#ffff00"));
+        homePageModelList.add(new HomePageModel(0,sliderModelList));
+
+
+        HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
+        testing.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        ////////////////////////////////
+
+
         ////////////////// Grid Product Layout
 
         TextView gridLayoutTitle = view.findViewById(R.id.grid_product_layout_title);
