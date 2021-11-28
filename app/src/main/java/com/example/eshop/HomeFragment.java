@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -42,6 +44,13 @@ public class HomeFragment extends Fragment {
     private ImageView stripAdImage;
     private ConstraintLayout stripAdContainer;
     ////////////////// Strip Ad
+
+    ////////////////// Horizontal Product Layout
+    private TextView horizontalLayoutTitle;
+    private Button horizontalLayoutViewAllBtn;
+    private RecyclerView horizontalRecyclerView;
+
+    ////////////////// Horizontal Product Layout
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,6 +155,30 @@ public class HomeFragment extends Fragment {
         stripAdImage.setImageResource(R.drawable.stripadd);
         stripAdContainer.setBackgroundColor(Color.parseColor("#000000"));
         ////////////////// Strip Ad
+
+        ////////////////// Horizontal Product Layout
+        horizontalLayoutTitle = view.findViewById(R.id.horizontal_scroll_layout_title);
+        horizontalLayoutViewAllBtn = view.findViewById(R.id.horizontal_scroll_layout_view_all_btn);
+        horizontalRecyclerView = view.findViewById(R.id.horizontal_scroll_layout_recyclerview);
+
+        List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+
+        HorizontalProductScrollAdapter horizontalProductScrollAdapter = new HorizontalProductScrollAdapter(horizontalProductScrollModelList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        horizontalRecyclerView.setLayoutManager(linearLayoutManager);
+
+        horizontalRecyclerView.setAdapter(horizontalProductScrollAdapter);
+        horizontalProductScrollAdapter.notifyDataSetChanged();
+        ////////////////// Horizontal Product Layout
 
         return view;
     }
