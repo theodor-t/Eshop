@@ -2,45 +2,52 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/slider_background"
+    xmlns:tools="http://schemas.android.com/tools"
     android:elevation="3dp"
-    android:paddingBottom="8dp"
+    android:background="@drawable/slider_background"
+    android:layout_margin="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/horizontal_scroll_layout_title"
+        android:id="@+id/grid_product_layout_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Deals of the Day!"
+        android:text="title"
         android:textSize="16sp"
+        android:textColor="@color/black"
         android:textStyle="bold"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/horizontal_scroll_layout_view_all_btn"
+
+        app:layout_constraintBottom_toBottomOf="@+id/grid_product_viewall_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/horizontal_scroll_layout_view_all_btn" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/horizontal_scroll_layout_view_all_btn"
+        android:id="@+id/grid_product_viewall_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="View all"
-        android:textSize="12sp"
+        android:textAllCaps="false"
+        android:textSize="16sp"
         android:backgroundTint="@color/purple_500"
         android:textColor="@color/white"
-
-        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/horizontal_scroll_layout_recyclerview"
+    <GridView
+        android:id="@+id/grid_product_layout_gridview"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="319dp"
+        android:layout_marginBottom="8dp"
+        android:background="#d9d9d9"
+        android:horizontalSpacing="1dp"
+        android:numColumns="2"
+        android:verticalSpacing="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_layout_view_all_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/grid_product_viewall_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
