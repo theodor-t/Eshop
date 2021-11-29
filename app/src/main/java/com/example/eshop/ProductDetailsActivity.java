@@ -57,10 +57,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (ALREADY_ADDED_TO_WISHLIST){
                     ALREADY_ADDED_TO_WISHLIST = false;
-                    addToWishListBtn.setSupportBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                    addToWishListBtn.setColorFilter(Color.rgb(192,192,192));
                 }else{
                     ALREADY_ADDED_TO_WISHLIST = true;
-                    addToWishListBtn.setSupportBackgroundTintList(getResources().getColorStateList(R.color.purple_500));
+                    addToWishListBtn.setColorFilter(Color.rgb(255,0,0));
                 }
             }
         });
