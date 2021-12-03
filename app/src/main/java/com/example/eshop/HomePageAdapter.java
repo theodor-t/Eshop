@@ -228,7 +228,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             if (horizontalProductScrollModelList.size() > 8){
                 horizontalLayoutViewAllBtn.setVisibility(View.VISIBLE);
             }else{
-                horizontalLayoutViewAllBtn.setVisibility(View.GONE);
+                horizontalLayoutViewAllBtn.setVisibility(View.INVISIBLE);
             }
             HorizontalProductScrollAdapter horizontalProductScrollAdapter = new HorizontalProductScrollAdapter(horizontalProductScrollModelList);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
