@@ -1,4 +1,7 @@
-package com.example.eshop;
+package com.example.eshop.home;
+
+import com.example.eshop.product.HorizontalProductScrollModel;
+import com.example.eshop.slider.SliderModel;
 
 import java.util.List;
 

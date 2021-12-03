@@ -2,12 +2,11 @@ package com.example.eshop;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 import android.widget.FrameLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.eshop.home.HomeFragment;
+import com.example.eshop.cart.MyCartFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;

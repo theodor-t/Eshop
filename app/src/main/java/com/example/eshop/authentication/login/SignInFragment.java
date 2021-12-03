@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.authentication.login;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,12 +23,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.eshop.MainActivity;
+import com.example.eshop.R;
+import com.example.eshop.authentication.register.SignUpFragment;
+import com.example.eshop.authentication.reset.ResetPasswordFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import static com.example.eshop.RegisterActivity.onResetPasswordFragment;
+import static com.example.eshop.authentication.register.RegisterActivity.onResetPasswordFragment;
 
 
 public class SignInFragment extends Fragment {
@@ -200,7 +204,7 @@ public class SignInFragment extends Fragment {
         }
     }
     private void mainIntent(){
-        Intent mainIntent = new Intent(getActivity(),MainActivity.class);
+        Intent mainIntent = new Intent(getActivity(), MainActivity.class);
         startActivity(mainIntent);
         getActivity().finish();
     }

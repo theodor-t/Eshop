@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.product;
 
 import android.view.View;
 import android.view.ViewGroup;

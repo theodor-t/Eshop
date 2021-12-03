@@ -11,18 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Eshop">
-        <activity android:name=".ProductDetailsActivity"></activity>
-        <activity android:name=".CategoryActivity" />
+        <activity android:name=".product.ProductDetailsActivity"></activity>
+        <activity android:name=".category.CategoryActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Eshop.NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".authentication.register.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>

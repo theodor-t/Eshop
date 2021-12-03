@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.product;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,10 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Type;
+import com.example.eshop.R;
+
 import java.util.List;
 
 public class ProductSpecificationAdapter  extends RecyclerView.Adapter<ProductSpecificationAdapter.ViewHolder> {

@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.home;
 
 import android.graphics.Color;
 import android.os.Handler;
@@ -17,11 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.eshop.product.GridProductViewLayoutAdapter;
+import com.example.eshop.product.HorizontalProductScrollAdapter;
+import com.example.eshop.slider.SliderAdapter;
+import com.example.eshop.product.HorizontalProductScrollModel;
+import com.example.eshop.R;
+import com.example.eshop.slider.SliderModel;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import io.grpc.internal.SharedResourceHolder;
 
 public class HomePageAdapter extends RecyclerView.Adapter {
 

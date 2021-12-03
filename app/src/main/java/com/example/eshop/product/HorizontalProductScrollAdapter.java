@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.product;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.eshop.R;
 
 import java.util.List;
 
@@ -68,7 +70,7 @@ public class HorizontalProductScrollAdapter  extends RecyclerView.Adapter<Horizo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent productDetailsIntent = new Intent(itemView.getContext(),ProductDetailsActivity.class);
+                    Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
                     itemView.getContext().startActivity(productDetailsIntent);
                 }
             });

@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.product;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.eshop.R;
 
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class GridProductViewLayoutAdapter extends BaseAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent productDetailsIntent =  new Intent(parent.getContext(),ProductDetailsActivity.class);
+                    Intent productDetailsIntent =  new Intent(parent.getContext(), ProductDetailsActivity.class);
                     parent.getContext().startActivity(productDetailsIntent);
                 }
             });

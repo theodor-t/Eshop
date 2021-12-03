@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.slider;
 
 public class SliderModel {
     private int banner;

@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.slider;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.example.eshop.R;
 
 import java.util.List;
 

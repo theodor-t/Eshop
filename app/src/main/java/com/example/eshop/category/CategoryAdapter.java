@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.category;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.eshop.R;
 
 import java.util.List;
 

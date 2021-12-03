@@ -1,4 +1,4 @@
-package com.example.eshop;
+package com.example.eshop.product;
 
 public class HorizontalProductScrollModel {
     private int productImage;
