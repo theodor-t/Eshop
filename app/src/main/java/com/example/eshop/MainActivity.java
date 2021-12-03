@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,0,0 );
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         frameLayout = findViewById(R.id.main_framelayout);
 
-        setFragment(new HomeFragment(),HOME_FRAGMENT);
+        setFragment(new HomeFragment(), HOME_FRAGMENT);
 
 
     }
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (currentFragment == HOME_FRAGMENT){
+        if (currentFragment == HOME_FRAGMENT) {
             getMenuInflater().inflate(R.menu.main, menu);
         }
         return true;
@@ -81,13 +81,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.main_search_icon){
+        if (id == R.id.main_search_icon) {
             //todo: search
             return true;
-        }else if (id == R.id.main_notification_icon){
+        } else if (id == R.id.main_notification_icon) {
             //todo: notification
             return true;
-        }else if (id == R.id.main_cart_icon){
+        } else if (id == R.id.main_cart_icon) {
             myCart();
             return true;
         }
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void myCart() {
         invalidateOptionsMenu();
-        setFragment(new MyCartFragment(),CART_FRAGMENT);
+        setFragment(new MyCartFragment(), CART_FRAGMENT);
         navigationView.getMenu().getItem(3).setChecked(true);
     }
 
@@ -112,17 +112,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.nav_my_mall){
-            setFragment(new HomeFragment(),HOME_FRAGMENT);
-        }else if (id == R.id.nav_my_orders){
+        if (id == R.id.nav_my_mall) {
+            setFragment(new HomeFragment(), HOME_FRAGMENT);
+        } else if (id == R.id.nav_my_orders) {
 
-        }else if (id == R.id.nav_my_cart){
+        } else if (id == R.id.nav_my_cart) {
             myCart();
-        }else if (id == R.id.nav_my_wishlist){
+        } else if (id == R.id.nav_my_wishlist) {
 
-        }else if (id == R.id.nav_my_account){
+        } else if (id == R.id.nav_my_account) {
 
-        }else if (id == R.id.nav_sign_out){
+        } else if (id == R.id.nav_sign_out) {
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -130,10 +130,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void setFragment(Fragment fragment, int fragmentNo){
+    private void setFragment(Fragment fragment, int fragmentNo) {
         currentFragment = fragmentNo;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(frameLayout.getId(),fragment);
+        fragmentTransaction.replace(frameLayout.getId(), fragment);
         fragmentTransaction.commit();
     }
 }

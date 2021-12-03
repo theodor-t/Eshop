@@ -162,5 +162,4 @@ public class CartItemModel {
     //////Cart total
 
 
-
 }
