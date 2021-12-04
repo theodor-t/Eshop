@@ -11,7 +11,6 @@ import com.example.eshop.cart.CartAdapter;
 import com.example.eshop.home.HomeFragment;
 import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.orders.MyOrdersFragment;
-import com.example.eshop.orders.OrderDetailsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         frameLayout = findViewById(R.id.main_framelayout);
 
-        setFragment(new OrderDetailsFragment(), HOME_FRAGMENT);
+        setFragment(new HomeFragment(), HOME_FRAGMENT);
 
 
     }
