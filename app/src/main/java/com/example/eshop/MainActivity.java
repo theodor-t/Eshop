@@ -1,9 +1,12 @@
 package com.example.eshop;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -11,6 +14,7 @@ import com.example.eshop.cart.CartAdapter;
 import com.example.eshop.home.HomeFragment;
 import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.orders.MyOrdersFragment;
+import com.example.eshop.rewards.MyRewardsFragment;
 import com.example.eshop.wishlist.MyWishlistFragment;
 import com.google.android.material.navigation.NavigationView;
 
@@ -33,11 +37,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int CART_FRAGMENT = 1;
     private static final int ORDERS_FRAGMENT = 2;
     private static final int WISHLIST_FRAGMENT = 3;
+    private static final int REWARDS_FRAGMENT = 4;
 
     private FrameLayout frameLayout;
     private ImageView actionBarLogo;
     private static int currentFragment = -1;
     private NavigationView navigationView;
+
+    private Window window;
+    private Toolbar toolbar;
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -45,10 +53,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         actionBarLogo = findViewById(R.id.actionbar_logo);
         setSupportActionBar(toolbar);
-
+        window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         navigationView = findViewById(R.id.nav_view);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -150,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setFragment(new HomeFragment(), HOME_FRAGMENT);
         } else if (id == R.id.nav_my_orders) {
             gotoFragment("My Orders",new MyOrdersFragment(),ORDERS_FRAGMENT);
+        } else if (id == R.id.nav_my_rewards) {
+            gotoFragment("My Rewards",new MyRewardsFragment(),REWARDS_FRAGMENT);
         } else if (id == R.id.nav_my_cart) {
             gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
         } else if (id == R.id.nav_my_wishlist) {
@@ -166,6 +177,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setFragment(Fragment fragment, int fragmentNo) {
         if (fragmentNo != currentFragment) {
+            if (fragmentNo == REWARDS_FRAGMENT){
+                window.setStatusBarColor(Color.parseColor("#5B04B1"));
+                toolbar.setBackgroundColor(Color.parseColor("#5B04B1"));
+            }else {
+                window.setStatusBarColor(getResources().getColor(R.color.purple_500));
+                toolbar.setBackgroundColor(getResources().getColor(R.color.purple_500));
+            }
             currentFragment = fragmentNo;
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
