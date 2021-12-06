@@ -144,7 +144,7 @@
         app:srcCompat="@mipmap/ic_delete_24px" />
 
     <View
-        android:id="@+id/divider12"
+        android:id="@+id/price_cut"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"

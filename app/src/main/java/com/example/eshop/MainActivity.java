@@ -11,6 +11,7 @@ import com.example.eshop.cart.CartAdapter;
 import com.example.eshop.home.HomeFragment;
 import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.orders.MyOrdersFragment;
+import com.example.eshop.wishlist.MyWishlistFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int HOME_FRAGMENT = 0;
     private static final int CART_FRAGMENT = 1;
     private static final int ORDERS_FRAGMENT = 2;
+    private static final int WISHLIST_FRAGMENT = 3;
 
     private FrameLayout frameLayout;
     private ImageView actionBarLogo;
@@ -48,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -73,6 +75,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setFragment(new HomeFragment(), HOME_FRAGMENT);
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        }else{
+            if (currentFragment == HOME_FRAGMENT) {
+                super.onBackPressed();
+            }else{
+                actionBarLogo.setVisibility(View.VISIBLE);
+                invalidateOptionsMenu();
+                setFragment(new HomeFragment(), HOME_FRAGMENT);
+                navigationView.getMenu().getItem(0).setChecked(true);
+            }
+        }
     }
 
     @Override
@@ -134,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_my_cart) {
             gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
         } else if (id == R.id.nav_my_wishlist) {
-
+            gotoFragment("My Wishlist",new MyWishlistFragment(),WISHLIST_FRAGMENT);
         } else if (id == R.id.nav_my_account) {
 
         } else if (id == R.id.nav_sign_out) {
