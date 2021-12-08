@@ -1,5 +1,6 @@
 package com.example.eshop.cart;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.eshop.R;
+import com.example.eshop.delivery.DeliveryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ public class MyCartFragment extends Fragment {
     }
 
     private RecyclerView cartItemsRecyclerView;
+    private Button continueBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,20 +38,32 @@ public class MyCartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_cart, container, false);
 
-        cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        cartItemsRecyclerView.setLayoutManager(layoutManager);
+            cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
+            continueBtn = view.findViewById(R.id.cart_continue_btn);
 
-        List<CartItemModel> cartItemModelList = new ArrayList<>();
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 2, "MDL 8999", "MDL 13000", 1, 0, 1));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 0, "MDL 8999", "MDL 13000", 1, 1, 0));
-        cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 2, "MDL 8999", "MDL 13000", 1, 2, 0));
-        cartItemModelList.add(new CartItemModel(1, "Price (3 items)", "MDL 48000", "Free", "MDL 5000", "45000"));
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+            layoutManager.setOrientation(RecyclerView.VERTICAL);
+            cartItemsRecyclerView.setLayoutManager(layoutManager);
 
-        CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
-        cartItemsRecyclerView.setAdapter(cartAdapter);
-        cartAdapter.notifyDataSetChanged();
+            List<CartItemModel> cartItemModelList = new ArrayList<>();
+            cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 2, "MDL 8999", "MDL 13000", 1, 0, 1));
+            cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 0, "MDL 8999", "MDL 13000", 1, 1, 0));
+            cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 2, "MDL 8999", "MDL 13000", 1, 2, 0));
+            cartItemModelList.add(new CartItemModel(1, "Price (3 items)", "MDL 48000", "Free", "MDL 5000", "45000"));
+
+            CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
+            cartItemsRecyclerView.setAdapter(cartAdapter);
+            cartAdapter.notifyDataSetChanged();
+
+            continueBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
+                    getContext().startActivity(deliveryIntent);
+
+                }
+            });
+
         return view;
     }
 }
