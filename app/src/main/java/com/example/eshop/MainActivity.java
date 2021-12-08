@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.example.eshop.account.MyAccountFragment;
 import com.example.eshop.cart.CartAdapter;
 import com.example.eshop.home.HomeFragment;
 import com.example.eshop.cart.MyCartFragment;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int ORDERS_FRAGMENT = 2;
     private static final int WISHLIST_FRAGMENT = 3;
     private static final int REWARDS_FRAGMENT = 4;
+    private static final int ACCOUNT_FRAGMENT = 5;
+
 
     private FrameLayout frameLayout;
     private ImageView actionBarLogo;
@@ -166,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_my_wishlist) {
             gotoFragment("My Wishlist",new MyWishlistFragment(),WISHLIST_FRAGMENT);
         } else if (id == R.id.nav_my_account) {
-
+            gotoFragment("My Account",new MyAccountFragment(),ACCOUNT_FRAGMENT);
         } else if (id == R.id.nav_sign_out) {
 
         }
