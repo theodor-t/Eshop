@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/total_ratings">
 
         <ProgressBar
-            android:id="@+id/packed_shipped_progress"
+            android:id="@+id/ratingbar1"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             android:progressTint="@color/successGreen" />
 
         <ProgressBar
-            android:id="@+id/shipped_delivered_progress"
+            android:id="@+id/ratingbar2"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
             android:progressTint="@color/successGreen" />
 
         <ProgressBar
-            android:id="@+id/progressBar3"
+            android:id="@+id/ratingbar3"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
             android:progressTint="#ffbb00" />
 
         <ProgressBar
-            android:id="@+id/progressBar4"
+            android:id="@+id/ratingbar4"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
             android:progressTint="#ffbb00" />
 
         <ProgressBar
-            android:id="@+id/progressBar5"
+            android:id="@+id/ratingbar5"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
