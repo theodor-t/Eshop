@@ -1,5 +1,6 @@
 package com.example.eshop.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.example.eshop.slider.SliderAdapter;
 import com.example.eshop.product.HorizontalProductScrollModel;
 import com.example.eshop.R;
 import com.example.eshop.slider.SliderModel;
+import com.example.eshop.viewall.ViewAllActivity;
 
 import java.util.List;
 import java.util.Timer;
@@ -232,6 +234,14 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             horizontalLayoutTitle.setText(title);
             if (horizontalProductScrollModelList.size() > 8){
                 horizontalLayoutViewAllBtn.setVisibility(View.VISIBLE);
+                horizontalLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
+                        viewAllIntent.putExtra("layout_code",0);
+                        itemView.getContext().startActivity(viewAllIntent);
+                    }
+                });
             }else{
                 horizontalLayoutViewAllBtn.setVisibility(View.INVISIBLE);
             }
@@ -259,6 +269,14 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         private void setGridProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelList, String title){
             gridLayoutTitle.setText(title);
             gridView.setAdapter(new GridProductViewLayoutAdapter(horizontalProductScrollModelList));
+            gridLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
+                    viewAllIntent.putExtra("layout_code",1);
+                    itemView.getContext().startActivity(viewAllIntent);
+                }
+            });
         }
 
     }

@@ -41,7 +41,7 @@ public class MyAddressesActivity extends AppCompatActivity {
         deliverHere = findViewById(R.id.deliver_here_btn);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myAddressesRecyclerView.setLayoutManager(layoutManager);
 
         List<AddressesModel> addressesModelList = new ArrayList<>();

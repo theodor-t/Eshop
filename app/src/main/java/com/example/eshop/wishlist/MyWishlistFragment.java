@@ -36,7 +36,7 @@ public class MyWishlistFragment extends Fragment {
 
         wishlistRecyclerView = view.findViewById(R.id.my_wishlist_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         wishlistRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<WishlistModel> wishlistModelList = new ArrayList<>();
@@ -48,7 +48,7 @@ public class MyWishlistFragment extends Fragment {
         wishlistModelList.add(new WishlistModel(R.drawable.product_image,"Iphone X",2,"4.9",29,"MDL 32400","MDL 38000","Cash on delivery"));
 
 
-        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList);
+        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList,true);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();
         return view;

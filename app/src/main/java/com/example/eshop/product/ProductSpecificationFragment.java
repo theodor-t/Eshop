@@ -37,7 +37,7 @@ public class ProductSpecificationFragment extends Fragment {
 
         productSpecificationRecyclerView = view.findViewById(R.id.product_specification_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         productSpecificationRecyclerView.setLayoutManager(linearLayoutManager);
 

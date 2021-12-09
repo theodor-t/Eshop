@@ -43,7 +43,7 @@ public class MyCartFragment extends Fragment {
             continueBtn = view.findViewById(R.id.cart_continue_btn);
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-            layoutManager.setOrientation(RecyclerView.VERTICAL);
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             cartItemsRecyclerView.setLayoutManager(layoutManager);
 
             List<CartItemModel> cartItemModelList = new ArrayList<>();

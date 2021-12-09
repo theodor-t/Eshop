@@ -39,7 +39,7 @@ public class MyRewardsFragment extends Fragment {
 
         rewardsRecyclerView = view.findViewById(R.id.my_rewards_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rewardsRecyclerView.setLayoutManager(layoutManager);
 
         List<RewardModel> rewardModelList = new ArrayList<>();

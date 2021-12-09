@@ -37,7 +37,7 @@ public class MyOrdersFragment extends Fragment {
 
         myOrdersRecyclerView = view.findViewById(R.id.my_orders_recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myOrdersRecyclerView.setLayoutManager(layoutManager);
 
         List<MyOrderItemModel> myOrderItemModelList = new ArrayList<>();

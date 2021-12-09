@@ -42,7 +42,7 @@ public class DeliveryActivity extends AppCompatActivity {
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         deliveryRecyclerView.setLayoutManager(layoutManager);
 
         List<CartItemModel> cartItemModelList = new ArrayList<>();
