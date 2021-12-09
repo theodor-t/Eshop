@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.eshop.R;
+import com.example.eshop.address.AddAddressActivity;
 import com.example.eshop.delivery.DeliveryActivity;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class MyCartFragment extends Fragment {
             continueBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
+                    Intent deliveryIntent = new Intent(getContext(), AddAddressActivity.class);
                     getContext().startActivity(deliveryIntent);
 
                 }
