@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.eshop.MainActivity;
 import com.example.eshop.R;
 import com.example.eshop.delivery.DeliveryActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,6 +24,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.eshop.MainActivity.showCart;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -149,7 +152,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
             //todo: search
             return true;
         }else if (id == R.id.main_cart_icon){
-            //todo: cart
+            Intent cartIntent = new Intent(ProductDetailsActivity.this, MainActivity.class);
+            showCart = true;
+            startActivity(cartIntent);
             return true;
         }
 

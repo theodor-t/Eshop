@@ -63,9 +63,6 @@ public class HomeFragment extends Fragment {
 
         ////////////////// Banner Slider
         List<SliderModel> sliderModelList = new ArrayList<SliderModel>();
-        sliderModelList.add(new SliderModel(R.mipmap.banner, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.banner1, "#077AE4"));
-
         sliderModelList.add(new SliderModel(R.mipmap.green_email, "#077AE4"));
         sliderModelList.add(new SliderModel(R.mipmap.red_email, "#077AE4"));
         sliderModelList.add(new SliderModel(R.mipmap.app_round_icon, "#077AE4"));
@@ -74,9 +71,6 @@ public class HomeFragment extends Fragment {
         sliderModelList.add(new SliderModel(R.mipmap.profile_placeholder, "#077AE4"));
         sliderModelList.add(new SliderModel(R.mipmap.home_icon, "#077AE4"));
         sliderModelList.add(new SliderModel(R.mipmap.custom_error_icon, "#077AE4"));
-
-        sliderModelList.add(new SliderModel(R.mipmap.green_email, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.red_email, "#077AE4"));
         ////////////////// Banner Slider
 
         ////////////////// Horizontal Product Layout
@@ -106,8 +100,6 @@ public class HomeFragment extends Fragment {
         homePageModelList.add(new HomePageModel(0,sliderModelList));
         homePageModelList.add(new HomePageModel(1,R.drawable.stripadd,"#000000"));
         homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#ffff00"));
-
-
 
         HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
         testing.setAdapter(adapter);

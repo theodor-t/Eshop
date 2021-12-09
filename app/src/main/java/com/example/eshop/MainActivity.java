@@ -40,11 +40,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int WISHLIST_FRAGMENT = 3;
     private static final int REWARDS_FRAGMENT = 4;
     private static final int ACCOUNT_FRAGMENT = 5;
+    public static Boolean showCart = false;
 
 
     private FrameLayout frameLayout;
     private ImageView actionBarLogo;
-    private static int currentFragment = -1;
+    private int currentFragment = -1;
     private NavigationView navigationView;
 
     private Window window;
@@ -75,17 +76,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
         frameLayout = findViewById(R.id.main_framelayout);
-
         setFragment(new HomeFragment(), HOME_FRAGMENT);
-
+        if (showCart){
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            gotoFragment("My Cart",new MyCartFragment(),-2);
+        }else{
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+            setFragment(new Fragment(),HOME_FRAGMENT);
+        }
 
     }
 
@@ -99,10 +105,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 currentFragment = -1;
                 super.onBackPressed();
             }else{
-                actionBarLogo.setVisibility(View.VISIBLE);
-                invalidateOptionsMenu();
-                setFragment(new HomeFragment(), HOME_FRAGMENT);
-                navigationView.getMenu().getItem(0).setChecked(true);
+                if (showCart){
+                    showCart = false;
+                    finish();
+                }else {
+                    actionBarLogo.setVisibility(View.VISIBLE);
+                    invalidateOptionsMenu();
+                    setFragment(new HomeFragment(), HOME_FRAGMENT);
+                    navigationView.getMenu().getItem(0).setChecked(true);
+                }
             }
         }
     }
@@ -130,7 +141,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.main_cart_icon) {
             gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
             return true;
+        }else if (id == android.R.id.home){
+            if (showCart){
+                showCart = false;
+                finish();
+                return true;
+            }
+
         }
+
 
         return super.onOptionsItemSelected(item);
     }
