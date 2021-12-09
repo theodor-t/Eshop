@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
         homePageModelList.add(new HomePageModel(0,sliderModelList));
         homePageModelList.add(new HomePageModel(1,R.drawable.stripadd,"#000000"));
         homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#ffff00"));
-        homePageModelList.add(new HomePageModel(0,sliderModelList));
+
 
 
         HomePageAdapter adapter = new HomePageAdapter(homePageModelList);

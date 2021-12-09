@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.eshop.product.GridProductViewLayoutAdapter;
 import com.example.eshop.product.HorizontalProductScrollAdapter;
+import com.example.eshop.product.ProductDetailsActivity;
 import com.example.eshop.slider.SliderAdapter;
 import com.example.eshop.product.HorizontalProductScrollModel;
 import com.example.eshop.R;
@@ -33,9 +35,11 @@ import java.util.TimerTask;
 public class HomePageAdapter extends RecyclerView.Adapter {
 
     private List<HomePageModel> homePageModelList;
+    private RecyclerView.RecycledViewPool recycledViewPool;
 
     public HomePageAdapter(List<HomePageModel> homePageModelList) {
         this.homePageModelList = homePageModelList;
+        recycledViewPool = new RecyclerView.RecycledViewPool();
     }
 
     @Override
@@ -229,6 +233,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             horizontalLayoutTitle = itemView.findViewById(R.id.horizontal_scroll_layout_title);
             horizontalLayoutViewAllBtn = itemView.findViewById(R.id.horizontal_scroll_layout_view_all_btn);
             horizontalRecyclerView = itemView.findViewById(R.id.horizontal_scroll_layout_recyclerview);
+            horizontalRecyclerView.setRecycledViewPool(recycledViewPool);
         }
         private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelList, String title){
             horizontalLayoutTitle.setText(title);
@@ -258,17 +263,38 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
         private TextView gridLayoutTitle;
         private Button gridLayoutViewAllBtn;
-        private GridView gridView;
+        private GridLayout gridProductLayout;
 
         public GridProductViewHolder(@NonNull View itemView) {
             super(itemView);
              gridLayoutTitle = itemView.findViewById(R.id.grid_product_layout_title);
              gridLayoutViewAllBtn = itemView.findViewById(R.id.grid_product_viewall_btn);
-             gridView = itemView.findViewById(R.id.grid_product_layout_gridview);
+             gridProductLayout = itemView.findViewById(R.id.grid_layout);
         }
         private void setGridProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelList, String title){
             gridLayoutTitle.setText(title);
-            gridView.setAdapter(new GridProductViewLayoutAdapter(horizontalProductScrollModelList));
+
+            for (int x = 0; x < 4;x++){
+                ImageView productImage = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_image);
+                TextView productTitle = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_title);
+                TextView productDescription = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_description);
+                TextView productPrice = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_price);
+
+                productImage.setImageResource(horizontalProductScrollModelList.get(x).getProductImage());
+                productTitle.setText(horizontalProductScrollModelList.get(x).getProductTitle());
+                productDescription.setText(horizontalProductScrollModelList.get(x).getProductDescription());
+                productPrice.setText(horizontalProductScrollModelList.get(x).getProductPrice());
+                gridProductLayout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
+
+                gridProductLayout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                        itemView.getContext().startActivity(productDetailsIntent);
+                    }
+                });
+            }
+
             gridLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
