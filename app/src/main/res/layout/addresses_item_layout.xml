@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
+    android:foreground="?attr/selectableItemBackground"
     android:elevation="3dp"
     android:layout_marginBottom="8dp"
     android:layout_marginTop="8dp"
@@ -64,7 +65,6 @@
         app:srcCompat="@mipmap/ic_check_24px" />
 
     <LinearLayout
-        android:id="@+id/edit_or_remove"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
@@ -72,9 +72,9 @@
         android:background="@color/recyclerViewBackground"
         android:elevation="3dp"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView16"
