@@ -6,12 +6,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.eshop.R;
+import com.example.eshop.address.MyAddressesActivity;
 import com.example.eshop.cart.CartAdapter;
 import com.example.eshop.cart.CartItemModel;
 import com.example.eshop.cart.MyCartFragment;
@@ -53,6 +55,13 @@ public class DeliveryActivity extends AppCompatActivity {
         cartAdapter.notifyDataSetChanged();
 
         changeOrAddNewAddressBtn.setVisibility(View.VISIBLE);
+        changeOrAddNewAddressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myAddressesIntent = new Intent(DeliveryActivity.this, MyAddressesActivity.class);
+                startActivity(myAddressesIntent);
+            }
+        });
     }
 
     @Override
