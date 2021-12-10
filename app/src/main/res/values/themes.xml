@@ -58,4 +58,6 @@
     <style name="Theme.Eshop.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Eshop.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
 </resources>
