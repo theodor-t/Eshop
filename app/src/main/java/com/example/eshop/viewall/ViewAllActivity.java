@@ -70,24 +70,6 @@ public class ViewAllActivity extends AppCompatActivity {
 
             gridView.setVisibility(View.VISIBLE);
             List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1, "POCO F1", "SD 425 Processor", "5000 MDL"));
 
             GridProductViewLayoutAdapter gridProductViewLayoutAdapter = new GridProductViewLayoutAdapter(horizontalProductScrollModelList);
             gridView.setAdapter(gridProductViewLayoutAdapter);
