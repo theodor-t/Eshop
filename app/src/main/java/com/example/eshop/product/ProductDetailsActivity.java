@@ -60,6 +60,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private static boolean ALREADY_ADDED_TO_WISHLIST = false;
     private FloatingActionButton addToWishListBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,17 +87,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
         ProductImagesAdapter productImagesAdapter = new ProductImagesAdapter(productImages);
         productImagesViewPager.setAdapter(productImagesAdapter);
 
-        viewpagerIndicator.setupWithViewPager(productImagesViewPager,true);
+        viewpagerIndicator.setupWithViewPager(productImagesViewPager, true);
 
         addToWishListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ALREADY_ADDED_TO_WISHLIST){
+                if (ALREADY_ADDED_TO_WISHLIST) {
                     ALREADY_ADDED_TO_WISHLIST = false;
-                    addToWishListBtn.setColorFilter(Color.rgb(192,192,192));
-                }else{
+                    addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
+                } else {
                     ALREADY_ADDED_TO_WISHLIST = true;
-                    addToWishListBtn.setColorFilter(Color.rgb(255,0,0));
+                    addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
                 }
             }
         });
@@ -123,7 +124,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         /////Rating layout
         rateNowContainer = findViewById(R.id.rate_now_container);
-        for (int x = 0; x < rateNowContainer.getChildCount();x++){
+        for (int x = 0; x < rateNowContainer.getChildCount(); x++) {
             final int starPosition = x;
             rateNowContainer.getChildAt(x).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -145,10 +146,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
         checkCoupenPriceDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         checkCoupenPriceDialog.setContentView(R.layout.coupen_redeem_dialog);
         checkCoupenPriceDialog.setCancelable(true);
-        checkCoupenPriceDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        checkCoupenPriceDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         ImageView toggleCoupenRecyclerView = checkCoupenPriceDialog.findViewById(R.id.toggle_recyclerview);
-        coupensRecyclerView =  checkCoupenPriceDialog.findViewById(R.id.coupens_recyclerview);
+        coupensRecyclerView = checkCoupenPriceDialog.findViewById(R.id.coupens_recyclerview);
         selectedCoupen = checkCoupenPriceDialog.findViewById(R.id.selected_coupen);
         coupenTitle = checkCoupenPriceDialog.findViewById(R.id.coupen_title);
         coupenExpiryDate = checkCoupenPriceDialog.findViewById(R.id.coupen_validity);
@@ -162,14 +163,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
         coupensRecyclerView.setLayoutManager(layoutManager);
 
         List<RewardModel> rewardModelList = new ArrayList<>();
-        rewardModelList.add(new RewardModel("Cashback","till 2nd,June 2022","GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
-        rewardModelList.add(new RewardModel("Cashback","till 2nd,June 2022","GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
-        rewardModelList.add(new RewardModel("Cashback","till 2nd,June 2022","GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
-        rewardModelList.add(new RewardModel("Cashback","till 2nd,June 2022","GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
-        rewardModelList.add(new RewardModel("Cashback","till 2nd,June 2022","GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
-        rewardModelList.add(new RewardModel("Cashback","till 2nd,June 2022","GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
+        rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
+        rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
+        rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
+        rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
+        rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
+        rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
 
-        MyRewardsAdapter myRewardsAdapter = new MyRewardsAdapter(rewardModelList,true);
+        MyRewardsAdapter myRewardsAdapter = new MyRewardsAdapter(rewardModelList, true);
         coupensRecyclerView.setAdapter(myRewardsAdapter);
         myRewardsAdapter.notifyDataSetChanged();
 
@@ -188,21 +189,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
     }
-    public static void showDialogRecyclerView(){
-        if (coupensRecyclerView.getVisibility() == View.GONE){
+
+    public static void showDialogRecyclerView() {
+        if (coupensRecyclerView.getVisibility() == View.GONE) {
             coupensRecyclerView.setVisibility(View.VISIBLE);
             selectedCoupen.setVisibility(View.GONE);
-        }else{
+        } else {
             coupensRecyclerView.setVisibility(View.GONE);
             selectedCoupen.setVisibility(View.VISIBLE);
         }
     }
 
     private void setRating(int starPosition) {
-        for (int x = 0;x < rateNowContainer.getChildCount();x++){
-            ImageView starBtn = (ImageView)rateNowContainer.getChildAt(x);
+        for (int x = 0; x < rateNowContainer.getChildCount(); x++) {
+            ImageView starBtn = (ImageView) rateNowContainer.getChildAt(x);
             starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#bebebe")));
-            if (x <= starPosition){
+            if (x <= starPosition) {
                 starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ffbb00")));
             }
         }
@@ -219,13 +221,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home){
+        if (id == android.R.id.home) {
             finish();
             return true;
-        }else if (id == R.id.main_search_icon){
+        } else if (id == R.id.main_search_icon) {
             //todo: search
             return true;
-        }else if (id == R.id.main_cart_icon){
+        } else if (id == R.id.main_cart_icon) {
             Intent cartIntent = new Intent(ProductDetailsActivity.this, MainActivity.class);
             showCart = true;
             startActivity(cartIntent);
@@ -234,7 +236,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }
