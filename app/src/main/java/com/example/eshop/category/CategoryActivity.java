@@ -35,53 +35,10 @@ public class CategoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         categoryRecyclerView = findViewById(R.id.category_recyclerview);
-
-        ////////////////// Banner Slider
-        List<SliderModel> sliderModelList = new ArrayList<SliderModel>();
-        sliderModelList.add(new SliderModel(R.mipmap.banner, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.banner1, "#077AE4"));
-
-        sliderModelList.add(new SliderModel(R.mipmap.green_email, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.red_email, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.app_round_icon, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.cart_black, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.profile_placeholder, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.home_icon, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.custom_error_icon, "#077AE4"));
-
-        sliderModelList.add(new SliderModel(R.mipmap.green_email, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.red_email, "#077AE4"));
-        ////////////////// Banner Slider
-
-        ////////////////// Horizontal Product Layout
-        List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        ////////////////// Horizontal Product Layout
-
-        ////////////////////////////////
         LinearLayoutManager testingLayoutManager = new LinearLayoutManager(this);
         testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         categoryRecyclerView.setLayoutManager(testingLayoutManager);
-
         List<HomePageModel> homePageModelList = new ArrayList<>();
-        homePageModelList.add(new HomePageModel(1,R.drawable.stripadd,"#000000"));
-        homePageModelList.add(new HomePageModel(0,sliderModelList));
-        homePageModelList.add(new HomePageModel(2,"Deals of the Day!",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(3,"#Trending",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(0,sliderModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.stripadd,"#000000"));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#ffff00"));
-
-
         HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
         categoryRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

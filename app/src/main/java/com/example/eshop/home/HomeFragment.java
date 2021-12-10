@@ -33,7 +33,8 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
-    private RecyclerView testing;
+    private RecyclerView homePageRecyclerView;
+    private HomePageAdapter adapter;
     private List<CategoryModel> categoryModelList;
     private FirebaseFirestore firebaseFirestore;
 
@@ -63,61 +64,76 @@ public class HomeFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                categoryModelList.add(new CategoryModel(documentSnapshot.get("icon").toString(),documentSnapshot.get("categoryName").toString()));
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                categoryModelList.add(new CategoryModel(documentSnapshot.get("icon").toString(), documentSnapshot.get("categoryName").toString()));
                             }
                             categoryAdapter.notifyDataSetChanged();
-                        }else{
+                        } else {
                             String error = task.getException().getMessage();
                             Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
-        ////////////////// Banner Slider
-        List<SliderModel> sliderModelList = new ArrayList<SliderModel>();
-        sliderModelList.add(new SliderModel(R.mipmap.green_email, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.red_email, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.app_round_icon, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.cart_black, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.profile_placeholder, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.home_icon, "#077AE4"));
-        sliderModelList.add(new SliderModel(R.mipmap.custom_error_icon, "#077AE4"));
-        ////////////////// Banner Slider
-
         ////////////////// Horizontal Product Layout
-        List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
-        ////////////////// Horizontal Product Layout
+//        List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.phone_1,"POCO F1","SD 425 Processor","5000 MDL"));
+//        ////////////////// Horizontal Product Layout
 
         ////////////////////////////////
-        testing = view.findViewById(R.id.home_page_recycler_view);
+        homePageRecyclerView = view.findViewById(R.id.home_page_recycler_view);
         LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
         testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        testing.setLayoutManager(testingLayoutManager);
-
+        homePageRecyclerView.setLayoutManager(testingLayoutManager);
         List<HomePageModel> homePageModelList = new ArrayList<>();
-        homePageModelList.add(new HomePageModel(1,R.drawable.stripadd,"#000000"));
-        homePageModelList.add(new HomePageModel(0,sliderModelList));
-        homePageModelList.add(new HomePageModel(2,"Deals of the Day!",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(3,"#Trending",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(0,sliderModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.stripadd,"#000000"));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner,"#ffff00"));
+        adapter = new HomePageAdapter(homePageModelList);
+        homePageRecyclerView.setAdapter(adapter);
 
-        HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
-        testing.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        firebaseFirestore.collection("CATEGORIES")
+                .document("HOME")
+                .collection("TOP_DEALS").orderBy("index").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+
+                                if ((long) documentSnapshot.get("view_type") == 0) {
+
+                                    List<SliderModel> sliderModelList = new ArrayList<>();
+                                    long no_of_banners = (long) documentSnapshot.get("no_of_banners");
+                                    for (long x = 1; x < no_of_banners + 1; x++) {
+                                        sliderModelList.add(new SliderModel(documentSnapshot.get("banner_" + x).toString()
+                                                , documentSnapshot.get("banner_" + x + "_background").toString()));
+                                    }
+                                    homePageModelList.add(new HomePageModel(0, sliderModelList));
+                                } else if ((long) documentSnapshot.get("view_type") == 1) {
+                                    homePageModelList.add(new HomePageModel(1, documentSnapshot.get("strip_ad_banner").toString()
+                                            , documentSnapshot.get("background").toString()));
+
+                                } else if ((long) documentSnapshot.get("view_type") == 2) {
+
+                                } else if ((long) documentSnapshot.get("view_type") == 3) {
+
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            String error = task.getException().getMessage();
+                            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
 
         ////////////////////////////////
         return view;
