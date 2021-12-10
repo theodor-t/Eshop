@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         } else if (id == R.id.main_cart_icon) {
             Dialog signInDialog = new Dialog(MainActivity.this);
+            signInDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             signInDialog.setContentView(R.layout.sign_in_dialog);
             signInDialog.setCancelable(true);
             signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);

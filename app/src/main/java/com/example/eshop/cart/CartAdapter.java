@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -135,6 +136,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Dialog quantityDialog = new Dialog(itemView.getContext());
+                    quantityDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     quantityDialog.setContentView(R.layout.quantity_dialog);
                     quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                     quantityDialog.setCancelable(false);
