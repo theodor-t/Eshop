@@ -25,6 +25,7 @@ public class ViewAllActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private GridView gridView;
+    public static List<WishlistModel> wishlistModelList;
     public static List<HorizontalProductScrollModel> horizontalProductScrollModelList;
 
 
@@ -49,20 +50,6 @@ public class ViewAllActivity extends AppCompatActivity {
             LinearLayoutManager layoutManager = new LinearLayoutManager(this);
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
-
-            List<WishlistModel> wishlistModelList = new ArrayList<>();
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 2, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 0, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 2, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 4, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 1, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 2, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 2, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 0, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 2, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 4, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 1, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
-            wishlistModelList.add(new WishlistModel(R.drawable.product_image, "Iphone X", 2, "4.9", 29, "MDL 32400", "MDL 38000", "Cash on delivery"));
 
             WishlistAdapter adapter = new WishlistAdapter(wishlistModelList, false);
             recyclerView.setAdapter(adapter);
