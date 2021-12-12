@@ -21,14 +21,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.eshop.MainActivity;
 import com.example.eshop.R;
 import com.example.eshop.delivery.DeliveryActivity;
 import com.example.eshop.rewards.MyRewardsAdapter;
 import com.example.eshop.rewards.RewardModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +43,18 @@ import static com.example.eshop.MainActivity.showCart;
 public class ProductDetailsActivity extends AppCompatActivity {
 
     private ViewPager productImagesViewPager;
+    private TextView productTitle;
+    private TextView averageRatingMiniView;
+    private TextView totalRatingsMiniView;
+    private TextView productPrice;
+    private TextView cuttedPrice;
+    private ImageView codIndicator;
+    private TextView tvCodIndicator;
     private TabLayout viewpagerIndicator;
     private Button couponRedeemBtn;
 
+    private TextView rewardTitle;
+    private TextView rewardBody;
     //////coupon dialog
     public static TextView couponTitle;
     public static TextView couponExpiryDate;
@@ -61,6 +75,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private static boolean ALREADY_ADDED_TO_WISHLIST = false;
     private FloatingActionButton addToWishListBtn;
 
+    private FirebaseFirestore firebaseFirestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,16 +93,56 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productDetailsTabLayout = findViewById(R.id.product_details_tablayout);
         buyNowBtn = findViewById(R.id.buy_now_btn);
         couponRedeemBtn = findViewById(R.id.coupon_redemption_btn);
+        productTitle = findViewById(R.id.product_title);
+        averageRatingMiniView = findViewById(R.id.tv_product_rating_miniview);
+        totalRatingsMiniView = findViewById(R.id.total_ratings_miniview);
+        productPrice = findViewById(R.id.product_price);
+        cuttedPrice = findViewById(R.id.cutted_price);
+        codIndicator = findViewById(R.id.cod_indicator_imageview);
+        tvCodIndicator = findViewById(R.id.tv_cod_indicator);
+        rewardTitle = findViewById(R.id.reward_title);
+        rewardBody = findViewById(R.id.reward_body);
 
-        List<Integer> productImages = new ArrayList<>();
-        productImages.add(R.drawable.product_image);
-        productImages.add(R.drawable.phone_1);
-        productImages.add(R.drawable.banner);
-        productImages.add(R.drawable.stripadd);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        List<String> productImages = new ArrayList<>();
+        firebaseFirestore.collection("PRODUCTS")
+                .document("uCxX7eHVTXwrbp0whU5t")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    for (long x = 1;x < (long)documentSnapshot.get("no_of_product_images") + 1;x++){
+                        productImages.add(documentSnapshot.get("product_image_" + x).toString());
+                    }
+                    ProductImagesAdapter productImagesAdapter = new ProductImagesAdapter(productImages);
+                    productImagesViewPager.setAdapter(productImagesAdapter);
 
-        ProductImagesAdapter productImagesAdapter = new ProductImagesAdapter(productImages);
-        productImagesViewPager.setAdapter(productImagesAdapter);
+                    productTitle.setText(documentSnapshot.get("product_title").toString());
+                    averageRatingMiniView.setText(documentSnapshot.get("average_rating").toString());
+                    totalRatingsMiniView.setText("("+(long)documentSnapshot.get("total_ratings")+")"+" ratings");
+                    productPrice.setText(documentSnapshot.get("product_price").toString() + " MDL");
+                    cuttedPrice.setText(documentSnapshot.get("cutted_price").toString() + " MDL");
 
+                    if ((boolean)documentSnapshot.get("COD")){
+                        codIndicator.setVisibility(View.VISIBLE);
+                        tvCodIndicator.setVisibility(View.VISIBLE);
+                    }else{
+                        codIndicator.setVisibility(View.INVISIBLE);
+                        tvCodIndicator.setVisibility(View.INVISIBLE);
+                    }
+                    rewardTitle.setText((long)documentSnapshot.get("free_coupon")+documentSnapshot.get("free_coupon_title").toString());
+                    rewardBody.setText(documentSnapshot.get("free_coupon_body").toString());
+
+                    if ((boolean)documentSnapshot.get("use_tab_layout")){
+
+                    }
+                }else{
+                    String error = task.getException().getMessage();
+                    Toast.makeText(ProductDetailsActivity.this, error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         viewpagerIndicator.setupWithViewPager(productImagesViewPager, true);
 
         addToWishListBtn.setOnClickListener(new View.OnClickListener() {
