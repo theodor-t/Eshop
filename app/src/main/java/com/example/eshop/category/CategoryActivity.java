@@ -12,17 +12,18 @@ import android.view.MenuItem;
 
 import com.example.eshop.home.HomePageAdapter;
 import com.example.eshop.home.HomePageModel;
-import com.example.eshop.product.HorizontalProductScrollModel;
-import com.example.eshop.slider.SliderModel;
 import com.example.eshop.R;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static com.example.eshop.db.DBQueries.lists;
+import static com.example.eshop.db.DBQueries.loadFragmentData;
+import static com.example.eshop.db.DBQueries.loadedCategoriesNames;
 
 public class CategoryActivity extends AppCompatActivity {
 
     private RecyclerView categoryRecyclerView;
-
+    private HomePageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,23 @@ public class CategoryActivity extends AppCompatActivity {
         LinearLayoutManager testingLayoutManager = new LinearLayoutManager(this);
         testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         categoryRecyclerView.setLayoutManager(testingLayoutManager);
-        List<HomePageModel> homePageModelList = new ArrayList<>();
-        HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
+
+
+        int listPosition = 0;
+        for (int x = 0;x < loadedCategoriesNames.size();x++){
+            if (loadedCategoriesNames.get(x).equals(title.toUpperCase())){
+                listPosition = x;
+            }
+        }
+        if (listPosition == 0){
+            loadedCategoriesNames.add(title.toUpperCase());
+            lists.add(new ArrayList<HomePageModel>());
+            adapter = new HomePageAdapter(lists.get(loadedCategoriesNames.size() -1));
+            loadFragmentData(adapter,this,loadedCategoriesNames.size() -1,title);
+        }else{
+            adapter = new HomePageAdapter(lists.get(listPosition));
+        }
+
         categoryRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
