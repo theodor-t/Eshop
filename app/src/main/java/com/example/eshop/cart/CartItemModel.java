@@ -18,23 +18,23 @@ public class CartItemModel {
     //////Cart item
     private int productImage;
     private String productTitle;
-    private int freeCoupens;
+    private int freeCoupons;
     private String productPrice;
     private String cuttedPrice;
     private int productQuantity;
     private int offersApplied;
-    private int coupensApplied;
+    private int couponsApplied;
 
-    public CartItemModel(int type, int productImage, String productTitle, int freeCoupens, String productPrice, String cuttedPrice, int productQuantity, int offersApplied, int coupensApplied) {
+    public CartItemModel(int type, int productImage, String productTitle, int freeCoupons, String productPrice, String cuttedPrice, int productQuantity, int offersApplied, int couponsApplied) {
         this.type = type;
         this.productImage = productImage;
         this.productTitle = productTitle;
-        this.freeCoupens = freeCoupens;
+        this.freeCoupons = freeCoupons;
         this.productPrice = productPrice;
         this.cuttedPrice = cuttedPrice;
         this.productQuantity = productQuantity;
         this.offersApplied = offersApplied;
-        this.coupensApplied = coupensApplied;
+        this.couponsApplied = couponsApplied;
     }
 
     public int getProductImage() {
@@ -53,12 +53,12 @@ public class CartItemModel {
         this.productTitle = productTitle;
     }
 
-    public int getFreeCoupens() {
-        return freeCoupens;
+    public int getFreeCoupons() {
+        return freeCoupons;
     }
 
-    public void setFreeCoupens(int freeCoupens) {
-        this.freeCoupens = freeCoupens;
+    public void setFreeCoupons(int freeCoupons) {
+        this.freeCoupons = freeCoupons;
     }
 
     public String getProductPrice() {
@@ -93,12 +93,12 @@ public class CartItemModel {
         this.offersApplied = offersApplied;
     }
 
-    public int getCoupensApplied() {
-        return coupensApplied;
+    public int getCouponsApplied() {
+        return couponsApplied;
     }
 
-    public void setCoupensApplied(int coupensApplied) {
-        this.coupensApplied = coupensApplied;
+    public void setCouponsApplied(int couponsApplied) {
+        this.couponsApplied = couponsApplied;
     }
 
     //////Cart item

@@ -39,15 +39,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private ViewPager productImagesViewPager;
     private TabLayout viewpagerIndicator;
-    private Button coupenRedeemBtn;
+    private Button couponRedeemBtn;
 
-    //////coupen dialog
-    public static TextView coupenTitle;
-    public static TextView coupenExpiryDate;
-    public static TextView coupenBody;
-    private static RecyclerView coupensRecyclerView;
-    private static LinearLayout selectedCoupen;
-    //////coupen dialog
+    //////coupon dialog
+    public static TextView couponTitle;
+    public static TextView couponExpiryDate;
+    public static TextView couponBody;
+    private static RecyclerView couponsRecyclerView;
+    private static LinearLayout selectedCoupon;
+    //////coupon dialog
 
     private ViewPager productDetailsViewPager;
     private TabLayout productDetailsTabLayout;
@@ -76,7 +76,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productDetailsViewPager = findViewById(R.id.product_details_viewpager);
         productDetailsTabLayout = findViewById(R.id.product_details_tablayout);
         buyNowBtn = findViewById(R.id.buy_now_btn);
-        coupenRedeemBtn = findViewById(R.id.coupen_redemption_btn);
+        couponRedeemBtn = findViewById(R.id.coupon_redemption_btn);
 
         List<Integer> productImages = new ArrayList<>();
         productImages.add(R.drawable.product_image);
@@ -141,26 +141,26 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 startActivity(deliveryIntent);
             }
         });
-        //////coupen dialog
-        Dialog checkCoupenPriceDialog = new Dialog(ProductDetailsActivity.this);
-        checkCoupenPriceDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        checkCoupenPriceDialog.setContentView(R.layout.coupen_redeem_dialog);
-        checkCoupenPriceDialog.setCancelable(true);
-        checkCoupenPriceDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //////coupon dialog
+        Dialog checkCouponPriceDialog = new Dialog(ProductDetailsActivity.this);
+        checkCouponPriceDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        checkCouponPriceDialog.setContentView(R.layout.coupon_redeem_dialog);
+        checkCouponPriceDialog.setCancelable(true);
+        checkCouponPriceDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        ImageView toggleCoupenRecyclerView = checkCoupenPriceDialog.findViewById(R.id.toggle_recyclerview);
-        coupensRecyclerView = checkCoupenPriceDialog.findViewById(R.id.coupens_recyclerview);
-        selectedCoupen = checkCoupenPriceDialog.findViewById(R.id.selected_coupen);
-        coupenTitle = checkCoupenPriceDialog.findViewById(R.id.coupen_title);
-        coupenExpiryDate = checkCoupenPriceDialog.findViewById(R.id.coupen_validity);
-        coupenBody = checkCoupenPriceDialog.findViewById(R.id.coupen_body);
+        ImageView toggleCouponRecyclerView = checkCouponPriceDialog.findViewById(R.id.toggle_recyclerview);
+        couponsRecyclerView = checkCouponPriceDialog.findViewById(R.id.coupons_recyclerview);
+        selectedCoupon = checkCouponPriceDialog.findViewById(R.id.selected_coupon);
+        couponTitle = checkCouponPriceDialog.findViewById(R.id.coupon_title);
+        couponExpiryDate = checkCouponPriceDialog.findViewById(R.id.coupon_validity);
+        couponBody = checkCouponPriceDialog.findViewById(R.id.coupon_body);
 
-        TextView originalPrice = checkCoupenPriceDialog.findViewById(R.id.original_price);
-        TextView discountedPrice = checkCoupenPriceDialog.findViewById(R.id.discounted_price);
+        TextView originalPrice = checkCouponPriceDialog.findViewById(R.id.original_price);
+        TextView discountedPrice = checkCouponPriceDialog.findViewById(R.id.discounted_price);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(ProductDetailsActivity.this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        coupensRecyclerView.setLayoutManager(layoutManager);
+        couponsRecyclerView.setLayoutManager(layoutManager);
 
         List<RewardModel> rewardModelList = new ArrayList<>();
         rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
@@ -171,32 +171,32 @@ public class ProductDetailsActivity extends AppCompatActivity {
         rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
 
         MyRewardsAdapter myRewardsAdapter = new MyRewardsAdapter(rewardModelList, true);
-        coupensRecyclerView.setAdapter(myRewardsAdapter);
+        couponsRecyclerView.setAdapter(myRewardsAdapter);
         myRewardsAdapter.notifyDataSetChanged();
 
-        toggleCoupenRecyclerView.setOnClickListener(new View.OnClickListener() {
+        toggleCouponRecyclerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialogRecyclerView();
             }
         });
-        //////coupen dialog
-        coupenRedeemBtn.setOnClickListener(new View.OnClickListener() {
+        //////coupon dialog
+        couponRedeemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                checkCoupenPriceDialog.show();
+                checkCouponPriceDialog.show();
             }
         });
     }
 
     public static void showDialogRecyclerView() {
-        if (coupensRecyclerView.getVisibility() == View.GONE) {
-            coupensRecyclerView.setVisibility(View.VISIBLE);
-            selectedCoupen.setVisibility(View.GONE);
+        if (couponsRecyclerView.getVisibility() == View.GONE) {
+            couponsRecyclerView.setVisibility(View.VISIBLE);
+            selectedCoupon.setVisibility(View.GONE);
         } else {
-            coupensRecyclerView.setVisibility(View.GONE);
-            selectedCoupen.setVisibility(View.VISIBLE);
+            couponsRecyclerView.setVisibility(View.GONE);
+            selectedCoupon.setVisibility(View.VISIBLE);
         }
     }
 

@@ -59,11 +59,11 @@ public class CartAdapter extends RecyclerView.Adapter {
             case CartItemModel.CART_ITEM:
                 int resource = cartItemModelList.get(position).getProductImage();
                 String title = cartItemModelList.get(position).getProductTitle();
-                int freeCoupens = cartItemModelList.get(position).getFreeCoupens();
+                int freeCoupons = cartItemModelList.get(position).getFreeCoupons();
                 String productPrice = cartItemModelList.get(position).getProductPrice();
                 String cuttedPrice = cartItemModelList.get(position).getCuttedPrice();
                 int offersApplied = cartItemModelList.get(position).getOffersApplied();
-                ((CartItemViewholder) viewHolder).setItemDetails(resource, title, freeCoupens, productPrice, cuttedPrice, offersApplied);
+                ((CartItemViewholder) viewHolder).setItemDetails(resource, title, freeCoupons, productPrice, cuttedPrice, offersApplied);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
                 String totalItems = cartItemModelList.get(position).getTotalItems();
@@ -86,43 +86,43 @@ public class CartAdapter extends RecyclerView.Adapter {
     class CartItemViewholder extends RecyclerView.ViewHolder {
 
         private ImageView productImage;
-        private ImageView freeCoupenIcon;
+        private ImageView freeCouponIcon;
         private TextView productTitle;
-        private TextView freeCoupens;
+        private TextView freeCoupons;
         private TextView productPrice;
         private TextView cuttedPrice;
         private TextView offersApplied;
-        private TextView coupensApplied;
+        private TextView couponsApplied;
         private TextView productQuantity;
 
         public CartItemViewholder(@NonNull View itemView) {
             super(itemView);
 
             productImage = itemView.findViewById(R.id.product_image);
-            freeCoupenIcon = itemView.findViewById(R.id.free_coupen_icon);
+            freeCouponIcon = itemView.findViewById(R.id.free_coupon_icon);
             productTitle = itemView.findViewById(R.id.product_title);
-            freeCoupens = itemView.findViewById(R.id.tv_free_coupen);
+            freeCoupons = itemView.findViewById(R.id.tv_free_coupon);
             productPrice = itemView.findViewById(R.id.product_price);
             cuttedPrice = itemView.findViewById(R.id.cutted_price);
             offersApplied = itemView.findViewById(R.id.offers_applied);
-            coupensApplied = itemView.findViewById(R.id.coupens_applied);
+            couponsApplied = itemView.findViewById(R.id.coupons_applied);
             productQuantity = itemView.findViewById(R.id.product_quantity);
         }
 
-        private void setItemDetails(int resource, String title, int freeCoupensNo, String productPriceText, String cuttedPriceText, int offersAppliedNo) {
+        private void setItemDetails(int resource, String title, int freeCouponsNo, String productPriceText, String cuttedPriceText, int offersAppliedNo) {
             productImage.setImageResource(resource);
             productTitle.setText(title);
-            if (freeCoupensNo > 0) {
-                freeCoupenIcon.setVisibility(View.VISIBLE);
-                freeCoupens.setVisibility(View.VISIBLE);
-                if (freeCoupensNo == 1) {
-                    freeCoupens.setText("Free " + freeCoupensNo + " Coupen");
+            if (freeCouponsNo > 0) {
+                freeCouponIcon.setVisibility(View.VISIBLE);
+                freeCoupons.setVisibility(View.VISIBLE);
+                if (freeCouponsNo == 1) {
+                    freeCoupons.setText("Free " + freeCouponsNo + " Coupon");
                 } else {
-                    freeCoupens.setText("Free " + freeCoupensNo + " Coupens");
+                    freeCoupons.setText("Free " + freeCouponsNo + " Coupons");
                 }
             } else {
-                freeCoupenIcon.setVisibility(View.INVISIBLE);
-                freeCoupens.setVisibility(View.INVISIBLE);
+                freeCouponIcon.setVisibility(View.INVISIBLE);
+                freeCoupons.setVisibility(View.INVISIBLE);
             }
             productPrice.setText(productPriceText);
             cuttedPrice.setText(cuttedPriceText);

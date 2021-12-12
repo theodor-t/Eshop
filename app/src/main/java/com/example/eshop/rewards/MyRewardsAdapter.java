@@ -39,7 +39,7 @@ public class MyRewardsAdapter extends RecyclerView.Adapter<MyRewardsAdapter.View
     public void onBindViewHolder(@NonNull Viewholder viewholder, int position) {
         String title = rewardModelList.get(position).getTitle();
         String date = rewardModelList.get(position).getExpiryDate();
-        String body = rewardModelList.get(position).getCoupenBody();
+        String body = rewardModelList.get(position).getCouponBody();
         viewholder.setData(title,date,body);
     }
 
@@ -50,29 +50,29 @@ public class MyRewardsAdapter extends RecyclerView.Adapter<MyRewardsAdapter.View
 
     public class Viewholder extends RecyclerView.ViewHolder {
 
-        private TextView coupenTitle;
-        private TextView coupenExpiryDate;
-        private TextView coupenBody;
+        private TextView couponTitle;
+        private TextView couponExpiryDate;
+        private TextView couponBody;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
 
-            coupenTitle = itemView.findViewById(R.id.coupen_title);
-            coupenExpiryDate = itemView.findViewById(R.id.coupen_validity);
-            coupenBody = itemView.findViewById(R.id.coupen_body);
+            couponTitle = itemView.findViewById(R.id.coupon_title);
+            couponExpiryDate = itemView.findViewById(R.id.coupon_validity);
+            couponBody = itemView.findViewById(R.id.coupon_body);
         }
         private void setData(String title,String date,String body){
-            coupenTitle.setText(title);
-            coupenExpiryDate.setText(date);
-            coupenBody.setText(body);
+            couponTitle.setText(title);
+            couponExpiryDate.setText(date);
+            couponBody.setText(body);
 
             if (useMiniLayout){
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ProductDetailsActivity.coupenTitle.setText(title);
-                        ProductDetailsActivity.coupenExpiryDate.setText(date);
-                        ProductDetailsActivity.coupenBody.setText(body);
+                        ProductDetailsActivity.couponTitle.setText(title);
+                        ProductDetailsActivity.couponExpiryDate.setText(date);
+                        ProductDetailsActivity.couponBody.setText(body);
                         ProductDetailsActivity.showDialogRecyclerView();
                     }
                 });

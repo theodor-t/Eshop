@@ -33,23 +33,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/free_coupen_icon"
+        android:id="@+id/free_coupon_icon"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:tint="#8000FF"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_free_coupen"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_free_coupon"
         app:layout_constraintStart_toStartOf="@+id/product_title"
-        app:layout_constraintTop_toTopOf="@+id/tv_free_coupen"
-        app:srcCompat="@mipmap/coupen" />
+        app:layout_constraintTop_toTopOf="@+id/tv_free_coupon"
+        app:srcCompat="@mipmap/coupon" />
 
     <TextView
-        android:id="@+id/tv_free_coupen"
+        android:id="@+id/tv_free_coupon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="free 2 coupens"
+        android:text="free 2 coupons"
         android:textSize="12sp"
         android:textColor="#8000FF"
-        app:layout_constraintStart_toEndOf="@+id/free_coupen_icon"
+        app:layout_constraintStart_toEndOf="@+id/free_coupon_icon"
         app:layout_constraintTop_toBottomOf="@+id/product_title" />
 
     <TextView
@@ -63,7 +63,7 @@
         android:textColor="#000000"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_free_coupen" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_free_coupon" />
 
     <TextView
         android:id="@+id/cutted_price"
@@ -97,11 +97,11 @@
         app:layout_constraintTop_toBottomOf="@+id/product_price" />
 
     <TextView
-        android:id="@+id/coupens_applied"
+        android:id="@+id/coupons_applied"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="Coupens applied"
+        android:text="Coupons applied"
         android:textColor="@color/purple_500"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,12 +119,12 @@
         android:drawableEnd="@mipmap/ic_arrow_drop_down_24px"
         android:drawablePadding="8dp"
         android:background="@drawable/border_background"
-        app:layout_constraintBottom_toBottomOf="@+id/coupens_applied"
+        app:layout_constraintBottom_toBottomOf="@+id/coupons_applied"
         app:layout_constraintStart_toEndOf="@+id/product_image"
         app:layout_constraintTop_toBottomOf="@+id/cutted_price" />
 
     <LinearLayout
-        android:id="@+id/coupen_redemption_layout"
+        android:id="@+id/coupon_redemption_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -134,19 +134,19 @@
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coupens_applied">
+        app:layout_constraintTop_toBottomOf="@+id/coupons_applied">
 
         <TextView
-            android:id="@+id/tv_coupen_redemption"
+            android:id="@+id/tv_coupon_redemption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Check price after coupen redemption"
+            android:text="Check price after coupon redemption"
             android:textAlignment="center"
             android:textColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/coupen_redemption_btn"
+            android:id="@+id/coupon_redemption_btn"
             android:layout_width="75dp"
             android:layout_height="30dp"
             android:background="@drawable/border_background"
@@ -166,7 +166,7 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coupen_redemption_layout">
+        app:layout_constraintTop_toBottomOf="@+id/coupon_redemption_layout">
 
         <TextView
             android:layout_width="wrap_content"

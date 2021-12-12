@@ -40,13 +40,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         String resource = wishlistModelList.get(position).getProductImage();
         String title = wishlistModelList.get(position).getProductTitle();
-        long freeCoupens = wishlistModelList.get(position).getFreeCoupens();
+        long freeCoupons = wishlistModelList.get(position).getFreeCoupons();
         String rating = wishlistModelList.get(position).getRating();
         long totalRatings = wishlistModelList.get(position).getTotalRatings();
         String productPrice = wishlistModelList.get(position).getProductPrice();
         String cuttedPrice = wishlistModelList.get(position).getCuttedPrice();
         boolean paymentMethod = wishlistModelList.get(position).isCOD();
-       viewHolder.setData(resource,title,freeCoupens,rating,totalRatings,productPrice,cuttedPrice,paymentMethod);
+       viewHolder.setData(resource,title,freeCoupons,rating,totalRatings,productPrice,cuttedPrice,paymentMethod);
 
     }
 
@@ -58,9 +58,9 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView productImage;
-        private ImageView coupenIcon;
+        private ImageView couponIcon;
         private TextView productTitle;
-        private TextView freeCoupens;
+        private TextView freeCoupons;
         private TextView rating;
         private TextView totalRatings;
         private TextView productPrice;
@@ -73,9 +73,9 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             super(itemView);
 
             productImage = itemView.findViewById(R.id.product_image);
-            coupenIcon = itemView.findViewById(R.id.coupen_icon);
+            couponIcon = itemView.findViewById(R.id.coupon_icon);
             productTitle = itemView.findViewById(R.id.product_title);
-            freeCoupens = itemView.findViewById(R.id.free_coupen);
+            freeCoupons = itemView.findViewById(R.id.free_coupon);
             rating = itemView.findViewById(R.id.tv_product_rating_miniview);
             totalRatings = itemView.findViewById(R.id.total_ratings);
             productPrice = itemView.findViewById(R.id.product_price);
@@ -85,19 +85,19 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             deleteBtn = itemView.findViewById(R.id.delete_btn);
         }
 
-        private void setData(String resource, String title, long freeCoupensNo, String averageRate, long totalRatingsNo, String price, String cuttedPriceValue, boolean COD) {
+        private void setData(String resource, String title, long freeCouponsNo, String averageRate, long totalRatingsNo, String price, String cuttedPriceValue, boolean COD) {
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.home_icon)).into(productImage);
             productTitle.setText(title);
-            if (freeCoupensNo != 0) {
-                coupenIcon.setVisibility(View.VISIBLE);
-                if (freeCoupensNo == 1) {
-                    freeCoupens.setText("Free " + freeCoupensNo + " Coupen");
+            if (freeCouponsNo != 0) {
+                couponIcon.setVisibility(View.VISIBLE);
+                if (freeCouponsNo == 1) {
+                    freeCoupons.setText("Free " + freeCouponsNo + " Coupon");
                 } else {
-                    freeCoupens.setText("Free " + freeCoupensNo + " Coupens");
+                    freeCoupons.setText("Free " + freeCouponsNo + " Coupons");
                 }
             }else{
-                coupenIcon.setVisibility(View.INVISIBLE);
-                freeCoupens.setVisibility(View.INVISIBLE);
+                couponIcon.setVisibility(View.INVISIBLE);
+                freeCoupons.setVisibility(View.INVISIBLE);
             }
             rating.setText(averageRate);
             totalRatings.setText("("+totalRatingsNo+") ratings");

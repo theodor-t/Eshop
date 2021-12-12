@@ -86,7 +86,7 @@ public class DBqueries {
 
                                         viewAllProductList.add(new WishlistModel(documentSnapshot.get("product_image_"+x).toString()
                                                 , documentSnapshot.get("product_full_title_" + x).toString()
-                                                , (long)documentSnapshot.get("free_coupens_" + x)
+                                                , (long)documentSnapshot.get("free_coupons_" + x)
                                                 , documentSnapshot.get("average_rating_" + x).toString()
                                                 ,(long)documentSnapshot.get("total_ratings_" + x)
                                                 , documentSnapshot.get("product_price_" + x).toString()

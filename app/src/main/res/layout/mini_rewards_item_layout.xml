@@ -12,7 +12,7 @@
     tools:visibility="visible">
 
     <ImageView
-        android:id="@+id/coupen_icon"
+        android:id="@+id/coupon_icon"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_marginStart="8dp"
@@ -23,20 +23,20 @@
         app:srcCompat="@mipmap/my_rewards" />
 
     <TextView
-        android:id="@+id/coupen_title"
+        android:id="@+id/coupon_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Discount coupen"
+        android:text="Discount coupon"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/coupen_icon"
-        app:layout_constraintStart_toEndOf="@+id/coupen_icon"
-        app:layout_constraintTop_toTopOf="@+id/coupen_icon" />
+        app:layout_constraintBottom_toBottomOf="@+id/coupon_icon"
+        app:layout_constraintStart_toEndOf="@+id/coupon_icon"
+        app:layout_constraintTop_toTopOf="@+id/coupon_icon" />
 
     <TextView
-        android:id="@+id/coupen_validity"
+        android:id="@+id/coupon_validity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/coupen_body"
+        android:id="@+id/coupon_body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -64,5 +64,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coupen_title" />
+        app:layout_constraintTop_toBottomOf="@+id/coupon_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
