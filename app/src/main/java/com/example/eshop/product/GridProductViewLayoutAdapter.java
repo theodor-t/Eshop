@@ -65,7 +65,7 @@ public class GridProductViewLayoutAdapter extends BaseAdapter {
             Glide.with(parent.getContext()).load(horizontalProductScrollModelList.get(position).getProductImage()).apply(new RequestOptions().placeholder(R.mipmap.home_icon)).into(productImage);
             productTitle.setText(horizontalProductScrollModelList.get(position).getProductTitle());
             productDescription.setText(horizontalProductScrollModelList.get(position).getProductDescription());
-            productPrice.setText(horizontalProductScrollModelList.get(position).getProductPrice());
+            productPrice.setText(horizontalProductScrollModelList.get(position).getProductPrice()+ " MDL");
         }else{
             view = convertView;
         }

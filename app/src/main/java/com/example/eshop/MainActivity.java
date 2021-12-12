@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private FrameLayout frameLayout;
-    private ImageView noInternetConnection;
     private ImageView actionBarLogo;
     private int currentFragment = -1;
     private NavigationView navigationView;
@@ -94,28 +93,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().getItem(0).setChecked(true);
 
         frameLayout = findViewById(R.id.main_framelayout);
-        noInternetConnection = findViewById(R.id.no_internet_connection);
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         setFragment(new HomeFragment(), HOME_FRAGMENT);
-        if (networkInfo != null && networkInfo.isConnected() == true) {
-            noInternetConnection.setVisibility(View.GONE);
-            if (showCart) {
-                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                gotoFragment("My Cart", new MyCartFragment(), -2);
-            } else {
-                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this
-                        , drawer, toolbar, 0, 0);
-                drawer.addDrawerListener(toggle);
-                toggle.syncState();
-                setFragment(new Fragment(), HOME_FRAGMENT);
-            }
-        }else{
-            Glide.with(this).load(R.drawable.no_internet_connection).into(noInternetConnection);
-            noInternetConnection.setVisibility(View.VISIBLE);
+        if (showCart) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            gotoFragment("My Cart", new MyCartFragment(), -2);
+        } else {
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this
+                    , drawer, toolbar, 0, 0);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+            setFragment(new Fragment(), HOME_FRAGMENT);
         }
+
 
     }
 

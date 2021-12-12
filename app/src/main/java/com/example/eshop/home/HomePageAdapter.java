@@ -318,7 +318,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 Glide.with(itemView.getContext()).load(horizontalProductScrollModelList.get(x).getProductImage()).apply(new RequestOptions().placeholder(R.mipmap.home_icon)).into(productImage);
                 productTitle.setText(horizontalProductScrollModelList.get(x).getProductTitle());
                 productDescription.setText(horizontalProductScrollModelList.get(x).getProductDescription());
-                productPrice.setText(horizontalProductScrollModelList.get(x).getProductPrice());
+                productPrice.setText(horizontalProductScrollModelList.get(x).getProductPrice() +" MDL");
                 gridProductLayout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
 
                 gridProductLayout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
@@ -333,8 +333,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             gridLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ViewAllActivity.horizontalProductScrollModelList = horizontalProductScrollModelList;
                     Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
                     viewAllIntent.putExtra("layout_code", 1);
+                    viewAllIntent.putExtra("title",title);
                     itemView.getContext().startActivity(viewAllIntent);
                 }
             });
