@@ -1,8 +1,12 @@
 package com.example.eshop;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
@@ -14,6 +18,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.eshop.account.MyAccountFragment;
 import com.example.eshop.authentication.register.RegisterActivity;
 import com.example.eshop.cart.CartAdapter;
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private FrameLayout frameLayout;
+    private ImageView noInternetConnection;
     private ImageView actionBarLogo;
     private int currentFragment = -1;
     private NavigationView navigationView;
@@ -88,16 +94,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().getItem(0).setChecked(true);
 
         frameLayout = findViewById(R.id.main_framelayout);
+        noInternetConnection = findViewById(R.id.no_internet_connection);
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         setFragment(new HomeFragment(), HOME_FRAGMENT);
-        if (showCart){
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            gotoFragment("My Cart",new MyCartFragment(),-2);
+        if (networkInfo != null && networkInfo.isConnected() == true) {
+            noInternetConnection.setVisibility(View.GONE);
+            if (showCart) {
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                gotoFragment("My Cart", new MyCartFragment(), -2);
+            } else {
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this
+                        , drawer, toolbar, 0, 0);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
+                setFragment(new Fragment(), HOME_FRAGMENT);
+            }
         }else{
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, 0, 0);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-            setFragment(new Fragment(),HOME_FRAGMENT);
+            Glide.with(this).load(R.drawable.no_internet_connection).into(noInternetConnection);
+            noInternetConnection.setVisibility(View.VISIBLE);
         }
 
     }
@@ -105,17 +122,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }else{
+        } else {
             if (currentFragment == HOME_FRAGMENT) {
                 currentFragment = -1;
                 super.onBackPressed();
-            }else{
-                if (showCart){
+            } else {
+                if (showCart) {
                     showCart = false;
                     finish();
-                }else {
+                } else {
                     actionBarLogo.setVisibility(View.VISIBLE);
                     invalidateOptionsMenu();
                     setFragment(new HomeFragment(), HOME_FRAGMENT);
@@ -150,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             signInDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             signInDialog.setContentView(R.layout.sign_in_dialog);
             signInDialog.setCancelable(true);
-            signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+            signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
             Button dialogSignInBtn = signInDialog.findViewById(R.id.sign_in_btn);
             Button dialogSignUpBtn = signInDialog.findViewById(R.id.sign_up_btn);
@@ -174,10 +191,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
             signInDialog.show();
-        //  gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
+            //  gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
             return true;
-        }else if (id == android.R.id.home){
-            if (showCart){
+        } else if (id == android.R.id.home) {
+            if (showCart) {
                 showCart = false;
                 finish();
                 return true;
@@ -189,13 +206,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    private void gotoFragment(String title, Fragment fragment,int fragmentNo) {
+    private void gotoFragment(String title, Fragment fragment, int fragmentNo) {
         actionBarLogo.setVisibility(View.GONE);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle(title);
         invalidateOptionsMenu();
         setFragment(fragment, fragmentNo);
-        if (fragmentNo ==  CART_FRAGMENT) {
+        if (fragmentNo == CART_FRAGMENT) {
             navigationView.getMenu().getItem(3).setChecked(true);
         }
     }
@@ -216,15 +233,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             invalidateOptionsMenu();
             setFragment(new HomeFragment(), HOME_FRAGMENT);
         } else if (id == R.id.nav_my_orders) {
-            gotoFragment("My Orders",new MyOrdersFragment(),ORDERS_FRAGMENT);
+            gotoFragment("My Orders", new MyOrdersFragment(), ORDERS_FRAGMENT);
         } else if (id == R.id.nav_my_rewards) {
-            gotoFragment("My Rewards",new MyRewardsFragment(),REWARDS_FRAGMENT);
+            gotoFragment("My Rewards", new MyRewardsFragment(), REWARDS_FRAGMENT);
         } else if (id == R.id.nav_my_cart) {
-            gotoFragment("My Cart",new MyCartFragment(),CART_FRAGMENT);
+            gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
         } else if (id == R.id.nav_my_wishlist) {
-            gotoFragment("My Wishlist",new MyWishlistFragment(),WISHLIST_FRAGMENT);
+            gotoFragment("My Wishlist", new MyWishlistFragment(), WISHLIST_FRAGMENT);
         } else if (id == R.id.nav_my_account) {
-            gotoFragment("My Account",new MyAccountFragment(),ACCOUNT_FRAGMENT);
+            gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
         } else if (id == R.id.nav_sign_out) {
 
         }
@@ -235,10 +252,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setFragment(Fragment fragment, int fragmentNo) {
         if (fragmentNo != currentFragment) {
-            if (fragmentNo == REWARDS_FRAGMENT){
+            if (fragmentNo == REWARDS_FRAGMENT) {
                 window.setStatusBarColor(Color.parseColor("#5B04B1"));
                 toolbar.setBackgroundColor(Color.parseColor("#5B04B1"));
-            }else {
+            } else {
                 window.setStatusBarColor(getResources().getColor(R.color.purple_500));
                 toolbar.setBackgroundColor(getResources().getColor(R.color.purple_500));
             }
