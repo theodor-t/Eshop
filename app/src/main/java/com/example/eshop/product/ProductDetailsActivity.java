@@ -3,6 +3,7 @@ package com.example.eshop.product;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -20,6 +21,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +57,34 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private TextView rewardTitle;
     private TextView rewardBody;
+
+    ////Product description
+    private ConstraintLayout productDetailsOnlyContainer;
+    private ConstraintLayout productDetailsTabsContainer;
+    private ViewPager productDetailsViewPager;
+    private TabLayout productDetailsTabLayout;
+    private TextView productOnlyDescriptionBody;
+
+    private List<ProductSpecificationModel> productSpecificationModelList = new ArrayList<>();
+    private String productDescription;
+    private String productOtherDetails;
+
+    ////Product description
+
+    /////Rating layout
+    private LinearLayout rateNowContainer;
+    private TextView totalRatings;
+    private LinearLayout ratingsNoContainer;
+    private TextView totalRatingsFigure;
+    private LinearLayout ratingsProgressBarContainer;
+    private TextView averageRating;
+    /////Rating layout
+
+    private Button buyNowBtn;
+
+    private static boolean ALREADY_ADDED_TO_WISHLIST = false;
+    private FloatingActionButton addToWishListBtn;
+
     //////coupon dialog
     public static TextView couponTitle;
     public static TextView couponExpiryDate;
@@ -62,18 +92,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private static RecyclerView couponsRecyclerView;
     private static LinearLayout selectedCoupon;
     //////coupon dialog
-
-    private ViewPager productDetailsViewPager;
-    private TabLayout productDetailsTabLayout;
-
-    /////Rating layout
-    private LinearLayout rateNowContainer;
-    /////Rating layout
-
-    private Button buyNowBtn;
-
-    private static boolean ALREADY_ADDED_TO_WISHLIST = false;
-    private FloatingActionButton addToWishListBtn;
 
     private FirebaseFirestore firebaseFirestore;
 
@@ -102,42 +120,76 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvCodIndicator = findViewById(R.id.tv_cod_indicator);
         rewardTitle = findViewById(R.id.reward_title);
         rewardBody = findViewById(R.id.reward_body);
+        productDetailsTabsContainer = findViewById(R.id.product_details_tabs_container);
+        productDetailsOnlyContainer = findViewById(R.id.product_details_container);
+        productOnlyDescriptionBody = findViewById(R.id.product_details_body);
+        totalRatings = findViewById(R.id.total_ratings);
+        ratingsNoContainer = findViewById(R.id.ratings_numbers_container);
+        totalRatingsFigure = findViewById(R.id.total_ratings_figure);
+        ratingsProgressBarContainer = findViewById(R.id.ratings_progressbar_container);
+        averageRating = findViewById(R.id.average_rating);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        List<String> productImages = new ArrayList<>();
+        List < String > productImages = new ArrayList < > ();
         firebaseFirestore.collection("PRODUCTS")
                 .document("uCxX7eHVTXwrbp0whU5t")
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                .get().addOnCompleteListener(new OnCompleteListener < DocumentSnapshot > () {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
+            public void onComplete(@NonNull Task < DocumentSnapshot > task) {
+                if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
-                    for (long x = 1;x < (long)documentSnapshot.get("no_of_product_images") + 1;x++){
+                    for (long x = 1; x < (long) documentSnapshot.get("no_of_product_images") + 1; x++) {
                         productImages.add(documentSnapshot.get("product_image_" + x).toString());
                     }
                     ProductImagesAdapter productImagesAdapter = new ProductImagesAdapter(productImages);
                     productImagesViewPager.setAdapter(productImagesAdapter);
-
                     productTitle.setText(documentSnapshot.get("product_title").toString());
                     averageRatingMiniView.setText(documentSnapshot.get("average_rating").toString());
-                    totalRatingsMiniView.setText("("+(long)documentSnapshot.get("total_ratings")+")"+" ratings");
+                    totalRatingsMiniView.setText("(" + (long) documentSnapshot.get("total_ratings") + ")" + " ratings");
                     productPrice.setText(documentSnapshot.get("product_price").toString() + " MDL");
                     cuttedPrice.setText(documentSnapshot.get("cutted_price").toString() + " MDL");
 
-                    if ((boolean)documentSnapshot.get("COD")){
+                    if ((boolean) documentSnapshot.get("COD")) {
                         codIndicator.setVisibility(View.VISIBLE);
                         tvCodIndicator.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         codIndicator.setVisibility(View.INVISIBLE);
                         tvCodIndicator.setVisibility(View.INVISIBLE);
                     }
-                    rewardTitle.setText((long)documentSnapshot.get("free_coupon")+documentSnapshot.get("free_coupon_title").toString());
+                    rewardTitle.setText((long) documentSnapshot.get("free_coupons") +" " + documentSnapshot.get("free_coupon_title").toString());
                     rewardBody.setText(documentSnapshot.get("free_coupon_body").toString());
 
-                    if ((boolean)documentSnapshot.get("use_tab_layout")){
+                    if ((boolean) documentSnapshot.get("use_tab_layout")) {
+                        productDetailsTabsContainer.setVisibility(View.VISIBLE);
+                        productDetailsOnlyContainer.setVisibility(View.GONE);
+                        productDescription = documentSnapshot.get("product_description").toString();
+                        productOtherDetails = documentSnapshot.get("product_other_details").toString();
+
+                        for (long x = 1; x < (long) documentSnapshot.get("total_spec_titles") + 1; x++) {
+                            productSpecificationModelList.add(new ProductSpecificationModel(0, documentSnapshot.get("spec_title_" + x).toString()));
+                            for (long y = 1; y < (long) documentSnapshot.get("spec_title_" + x + "_total_fields") + 1; y++) {
+                                productSpecificationModelList.add(new ProductSpecificationModel(1, documentSnapshot.get("spec_" + x + "_title_field_" + y + "_name").toString(), documentSnapshot.get("spec_" + x + "_title_field_" + y + "_value").toString()));
+                            }
+                        }
+                    } else {
+                        productDetailsTabsContainer.setVisibility(View.GONE);
+                        productDetailsOnlyContainer.setVisibility(View.VISIBLE);
+                        productOnlyDescriptionBody.setText(documentSnapshot.get("product_description").toString());
+                    }
+                    totalRatings.setText((long) documentSnapshot.get("total_ratings") + "ratings");
+                    for (int x = 0; x < 5; x++) {
+                        TextView rating = (TextView) ratingsNoContainer.getChildAt(x);
+                        rating.setText(String.valueOf((long) documentSnapshot.get((5 - x) + "_star")));
+                        ProgressBar progressBar = (ProgressBar) ratingsProgressBarContainer.getChildAt(x);
+                        int maxProgress = Integer.parseInt(String.valueOf((long) documentSnapshot.get("total_ratings")));
+                        progressBar.setMax(maxProgress);
+                        progressBar.setProgress(Integer.parseInt(String.valueOf((long) documentSnapshot.get((5 - x) + "_star"))));
 
                     }
-                }else{
+                    totalRatingsFigure.setText(String.valueOf((long) documentSnapshot.get("total_ratings")));
+                    averageRating.setText(documentSnapshot.get("average_rating").toString());
+                    productDetailsViewPager.setAdapter(new ProductDetailsAdapter(getSupportFragmentManager(), productDetailsTabLayout.getTabCount(),productDescription,productOtherDetails,productSpecificationModelList));
+                } else {
                     String error = task.getException().getMessage();
                     Toast.makeText(ProductDetailsActivity.this, error, Toast.LENGTH_SHORT).show();
                 }
@@ -158,7 +210,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        productDetailsViewPager.setAdapter(new ProductDetailsAdapter(getSupportFragmentManager(), productDetailsTabLayout.getTabCount()));
 
         productDetailsViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productDetailsTabLayout));
         productDetailsTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -218,7 +269,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         couponsRecyclerView.setLayoutManager(layoutManager);
 
-        List<RewardModel> rewardModelList = new ArrayList<>();
+        List < RewardModel > rewardModelList = new ArrayList < > ();
         rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
         rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
         rewardModelList.add(new RewardModel("Cashback", "till 2nd,June 2022", "GET 20% CASHBACK on any product above MDL 200 and below MDL 3000."));
@@ -292,6 +343,4 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }
