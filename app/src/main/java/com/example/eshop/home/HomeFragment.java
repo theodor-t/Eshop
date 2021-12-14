@@ -60,26 +60,26 @@ public class HomeFragment extends Fragment {
             categoryAdapter = new CategoryAdapter(categoryModelList);
             categoryRecyclerView.setAdapter(categoryAdapter);
 
-            if (categoryModelList.size() == 0){
-                loadCategories(categoryAdapter,getContext());
-            }else{
+            if (categoryModelList.size() == 0) {
+                loadCategories(categoryAdapter, getContext());
+            } else {
                 categoryAdapter.notifyDataSetChanged();
             }
             homePageRecyclerView = view.findViewById(R.id.home_page_recycler_view);
             LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
             testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             homePageRecyclerView.setLayoutManager(testingLayoutManager);
-            if (lists.size() == 0){
+            if (lists.size() == 0) {
                 loadedCategoriesNames.add("HOME");
                 lists.add(new ArrayList<HomePageModel>());
                 adapter = new HomePageAdapter(lists.get(0));
-                loadFragmentData(adapter,getContext(),0,"Home");
-            }else{
+                loadFragmentData(adapter, getContext(), 0, "Home");
+            } else {
                 adapter = new HomePageAdapter(lists.get(0));
                 adapter.notifyDataSetChanged();
             }
             homePageRecyclerView.setAdapter(adapter);
-        }else{
+        } else {
             Glide.with(this).load(R.drawable.no_internet_connection).into(noInternetConnection);
             noInternetConnection.setVisibility(View.VISIBLE);
         }
