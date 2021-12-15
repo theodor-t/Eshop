@@ -58,13 +58,14 @@ public class HomeFragment extends Fragment {
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             categoryRecyclerView.setLayoutManager(layoutManager);
             categoryAdapter = new CategoryAdapter(categoryModelList);
-            categoryRecyclerView.setAdapter(categoryAdapter);
 
             if (categoryModelList.size() == 0) {
                 loadCategories(categoryAdapter, getContext());
             } else {
+                categoryAdapter = new CategoryAdapter(categoryModelList);
                 categoryAdapter.notifyDataSetChanged();
             }
+            categoryRecyclerView.setAdapter(categoryAdapter);
             homePageRecyclerView = view.findViewById(R.id.home_page_recycler_view);
             LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
             testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
