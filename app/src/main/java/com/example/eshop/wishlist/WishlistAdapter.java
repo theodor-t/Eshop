@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.eshop.R;
+import com.example.eshop.db.DBQueries;
 import com.example.eshop.product.ProductDetailsActivity;
 
 import java.util.List;
@@ -23,6 +26,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     private List<WishlistModel> wishlistModelList;
     private Boolean wishList;
+    private int lastPosition = -1;
 
     public WishlistAdapter(List<WishlistModel> wishlistModelList,Boolean wishList) {
         this.wishlistModelList = wishlistModelList;
@@ -46,8 +50,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         String productPrice = wishlistModelList.get(position).getProductPrice();
         String cuttedPrice = wishlistModelList.get(position).getCuttedPrice();
         boolean paymentMethod = wishlistModelList.get(position).isCOD();
-       viewHolder.setData(resource,title,freeCoupons,rating,totalRatings,productPrice,cuttedPrice,paymentMethod);
+        viewHolder.setData(resource,title,freeCoupons,rating,totalRatings,productPrice,cuttedPrice,paymentMethod,position);
 
+        if (lastPosition <  position) {
+            Animation animation = AnimationUtils.loadAnimation(viewHolder.itemView.getContext(), R.anim.fade_in);
+            viewHolder.itemView.setAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     @Override
@@ -85,8 +94,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             deleteBtn = itemView.findViewById(R.id.delete_btn);
         }
 
-        private void setData(String resource, String title, long freeCouponsNo, String averageRate, long totalRatingsNo, String price, String cuttedPriceValue, boolean COD) {
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.home_icon)).into(productImage);
+        private void setData(String resource, String title, long freeCouponsNo, String averageRate, long totalRatingsNo, String price, String cuttedPriceValue, boolean COD,int index) {
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.placeholder)).into(productImage);
             productTitle.setText(title);
             if (freeCouponsNo != 0) {
                 couponIcon.setVisibility(View.VISIBLE);
@@ -118,7 +127,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(itemView.getContext(),"delete",Toast.LENGTH_SHORT).show();
+                    deleteBtn.setEnabled(false);
+                    DBQueries.removeFromWishList(index,itemView.getContext());
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {

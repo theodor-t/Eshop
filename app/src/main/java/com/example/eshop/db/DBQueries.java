@@ -60,7 +60,6 @@ public class DBQueries {
                     }
                 });
     }
-
     public static void loadFragmentData(HomePageAdapter adapter,Context context, final int index,String categoryName){
         firebaseFirestore.collection("CATEGORIES")
                 .document(categoryName.toUpperCase())
@@ -129,7 +128,6 @@ public class DBQueries {
                     }
                 });
     }
-
     public static void loadWishList(Context context, Dialog dialog,final boolean loadProductData){
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -138,9 +136,19 @@ public class DBQueries {
                 if (task.isSuccessful()){
                     for (long x = 0;x < (long) task.getResult().get("list_size");x++){
                         wishList.add(task.getResult().get("product_ID_"+ x).toString());
+                        if (DBQueries.wishList.contains(ProductDetailsActivity.productID)){
+                            ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = true;
+                            if (ProductDetailsActivity.addToWishListBtn != null) {
+                                ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
+                            }
+                        }else{
+                            if (ProductDetailsActivity.addToWishListBtn != null) {
+                                ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
+                                ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = false;
+                            }
+                        }
 
                         if (loadProductData) {
-
                             firebaseFirestore.collection("PRODUCTS").document(task.getResult().get("product_ID_" + x).toString())
                                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -172,7 +180,6 @@ public class DBQueries {
             }
         });
     }
-
     public static void removeFromWishList(int index, Context context){
 
         wishList.remove(index);
@@ -194,13 +201,25 @@ public class DBQueries {
                     ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = false;
                     Toast.makeText(context, "Removed successfully!", Toast.LENGTH_SHORT).show();
                 }else{
-                    ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
+                    if (ProductDetailsActivity.addToWishListBtn !=null) {
+                        ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
+                    }
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
-                ProductDetailsActivity.addToWishListBtn.setEnabled(true);
+                if (ProductDetailsActivity.addToWishListBtn != null) {
+                    ProductDetailsActivity.addToWishListBtn.setEnabled(true);
+                }
             }
         });
 
+    }
+
+    public static void clearData(){
+        categoryModelList.clear();
+        lists.clear();
+        loadedCategoriesNames.clear();
+        wishList.clear();
+        wishlistModelList.clear();
     }
 }

@@ -24,6 +24,7 @@ import com.example.eshop.authentication.login.SignInFragment;
 import com.example.eshop.authentication.register.RegisterActivity;
 import com.example.eshop.authentication.register.SignUpFragment;
 import com.example.eshop.cart.CartAdapter;
+import com.example.eshop.db.DBQueries;
 import com.example.eshop.home.HomeFragment;
 import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.orders.MyOrdersFragment;
@@ -95,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
 
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -257,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
             } else if (id == R.id.nav_sign_out) {
                 FirebaseAuth.getInstance().signOut();
+                DBQueries.clearData();
                 Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
                 startActivity(registerIntent);
                 finish();

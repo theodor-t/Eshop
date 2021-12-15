@@ -107,7 +107,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private Dialog signInDialog;
     private Dialog loadingDialog;
     private FirebaseUser currentUser;
-    private String productID;
+    public static String productID;
 
     private DocumentSnapshot documentSnapshot;
 
@@ -235,6 +235,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         ALREADY_ADDED_TO_WISHLIST = true;
                         addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
                     }else{
+                        addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
                         ALREADY_ADDED_TO_WISHLIST = false;
                     }
                 } else {
@@ -259,12 +260,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         DBQueries.removeFromWishList(index,ProductDetailsActivity.this);
                         addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
                     } else {
-                        addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
+                        addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
                         Map<String,Object> addProduct = new HashMap<>();
                         addProduct.put("product_ID_"+String.valueOf(DBQueries.wishList.size()),productID);
 
                         firebaseFirestore.collection("USERS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
-                                .set(addProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .update(addProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
@@ -477,6 +478,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             ALREADY_ADDED_TO_WISHLIST = true;
             addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
         }else{
+            addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
             ALREADY_ADDED_TO_WISHLIST = false;
         }
     }
