@@ -37,6 +37,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -45,7 +47,6 @@ import java.util.List;
 
 import static com.example.eshop.MainActivity.showCart;
 import static com.example.eshop.authentication.register.RegisterActivity.setSignUpFragment;
-import static com.example.eshop.db.DBQueries.currentUser;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -99,7 +100,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private static RecyclerView couponsRecyclerView;
     private static LinearLayout selectedCoupon;
     //////coupon dialog
-
+    private FirebaseUser currentUser;
     private Dialog signInDialog;
 
     private FirebaseFirestore firebaseFirestore;
@@ -143,7 +144,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         List < String > productImages = new ArrayList < > ();
         firebaseFirestore.collection("PRODUCTS")
-                .document("uCxX7eHVTXwrbp0whU5t")
+                .document(getIntent().getStringExtra("PRODUCT_ID"))
                 .get().addOnCompleteListener(new OnCompleteListener < DocumentSnapshot > () {
             @Override
             public void onComplete(@NonNull Task < DocumentSnapshot > task) {
@@ -361,8 +362,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
         ////sign dialog
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null){
             couponRedemptionLayout.setVisibility(View.GONE);
+        }else{
+            couponRedemptionLayout.setVisibility(View.VISIBLE);
         }
     }
 

@@ -38,8 +38,9 @@ public class HorizontalProductScrollAdapter  extends RecyclerView.Adapter<Horizo
         String title = horizontalProductScrollModelList.get(position).getProductTitle();
         String description = horizontalProductScrollModelList.get(position).getProductDescription();
         String price = horizontalProductScrollModelList.get(position).getProductPrice();
+        String productID = horizontalProductScrollModelList.get(position).getProductID();
 
-        viewHolder.setData(resource,title,description,price);
+        viewHolder.setData(productID,resource,title,description,price);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class HorizontalProductScrollAdapter  extends RecyclerView.Adapter<Horizo
             productPrice = itemView.findViewById(R.id.h_s_product_price);
 
         }
-        private void setData(String resource,String title,String description,String price){
+        private void setData(String productID,String resource,String title,String description,String price){
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.placeholder)).into(productImage);
             productPrice.setText(price + " MDL");
             productDescription.setText(description);
@@ -77,6 +78,7 @@ public class HorizontalProductScrollAdapter  extends RecyclerView.Adapter<Horizo
                     @Override
                     public void onClick(View view) {
                         Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                        productDetailsIntent.putExtra("PRODUCT_ID",productID);
                         itemView.getContext().startActivity(productDetailsIntent);
                     }
                 });

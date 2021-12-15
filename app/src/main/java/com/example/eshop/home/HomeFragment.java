@@ -9,16 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.eshop.category.CategoryAdapter;
+import com.example.eshop.MainActivity;
 import com.example.eshop.R;
+import com.example.eshop.category.CategoryAdapter;
+
 
 import java.util.ArrayList;
 
+import static com.example.eshop.MainActivity.drawer;
 import static com.example.eshop.db.DBQueries.categoryModelList;
 import static com.example.eshop.db.DBQueries.lists;
 import static com.example.eshop.db.DBQueries.loadCategories;
@@ -51,6 +55,7 @@ public class HomeFragment extends Fragment {
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() == true) {
+            //MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             noInternetConnection.setVisibility(View.GONE);
             categoryRecyclerView = view.findViewById(R.id.category_recyclerview);
 
@@ -82,6 +87,7 @@ public class HomeFragment extends Fragment {
             }
             homePageRecyclerView.setAdapter(adapter);
         } else {
+           // MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             Glide.with(this).load(R.drawable.no_internet_connection).into(noInternetConnection);
             noInternetConnection.setVisibility(View.VISIBLE);
         }

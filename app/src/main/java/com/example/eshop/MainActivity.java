@@ -30,6 +30,8 @@ import com.example.eshop.orders.MyOrdersFragment;
 import com.example.eshop.rewards.MyRewardsFragment;
 import com.example.eshop.wishlist.MyWishlistFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -45,7 +47,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import static com.example.eshop.authentication.register.RegisterActivity.setSignUpFragment;
-import static com.example.eshop.db.DBQueries.currentUser;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Window window;
     private Toolbar toolbar;
     private Dialog signInDialog;
+    private FirebaseUser currentUser;
+
+    public static DrawerLayout drawer;
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         navigationView = findViewById(R.id.nav_view);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -109,11 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             toggle.syncState();
             setFragment(new Fragment(), HOME_FRAGMENT);
         }
-        if (currentUser == null){
-            navigationView.getMenu().getItem(navigationView.getMenu().size() - 1).setEnabled(false);
-        }else{
-            navigationView.getMenu().getItem(navigationView.getMenu().size() - 1).setEnabled(true);
-        }
+
         signInDialog = new Dialog(MainActivity.this);
         signInDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         signInDialog.setContentView(R.layout.sign_in_dialog);
@@ -144,6 +144,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(registerIntent);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null){
+            navigationView.getMenu().getItem(navigationView.getMenu().size() - 1).setEnabled(false);
+        }else{
+            navigationView.getMenu().getItem(navigationView.getMenu().size() - 1).setEnabled(true);
+        }
+
     }
 
     @Override
@@ -244,7 +256,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else if (id == R.id.nav_my_account) {
                 gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
             } else if (id == R.id.nav_sign_out) {
-
+                FirebaseAuth.getInstance().signOut();
+                Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
+                startActivity(registerIntent);
+                finish();
             }
             drawer.closeDrawer(GravityCompat.START);
             return true;
