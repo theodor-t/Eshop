@@ -14,6 +14,8 @@ import com.example.eshop.slider.SliderModel;
 import com.example.eshop.wishlist.WishlistModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -22,6 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBQueries {
+
+    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public static FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModelList = new ArrayList<>();

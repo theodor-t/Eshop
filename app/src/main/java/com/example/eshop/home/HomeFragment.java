@@ -59,6 +59,7 @@ public class HomeFragment extends Fragment {
             categoryRecyclerView.setLayoutManager(layoutManager);
             categoryAdapter = new CategoryAdapter(categoryModelList);
 
+
             if (categoryModelList.size() == 0) {
                 loadCategories(categoryAdapter, getContext());
             } else {
