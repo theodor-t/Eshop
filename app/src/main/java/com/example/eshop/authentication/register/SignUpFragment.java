@@ -31,10 +31,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -175,12 +178,10 @@ public class SignUpFragment extends Fragment {
             }
         });
 
-
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkEmailAndPassword();
-
             }
         });
     }
@@ -241,30 +242,51 @@ public class SignUpFragment extends Fragment {
                                                @Override
                                                public void onComplete(@NonNull Task<Void> task) {
                                                    if (task.isSuccessful()){
-                                                       Map<String,Object> listSize = new HashMap<>();
-                                                       listSize.put("list_size",(long) 0);
-                                                       firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_DATA").document("MY_WISHLIST")
-                                                               .set(listSize).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                           @Override
-                                                           public void onComplete(@NonNull Task<Void> task) {
-                                                               if (task.isSuccessful()){
-                                                                   mainIntent();
-                                                               }else{
-                                                                   progressBar.setVisibility(View.INVISIBLE);
-                                                                   signUpBtn.setEnabled(true);
-                                                                   signUpBtn.setTextColor(Color.rgb(255,255,255));
-                                                                   String error = task.getException().getMessage();
-                                                                   Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+
+                                                       CollectionReference userDataReference = firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_DATA");
+
+                                                       ///MAPS
+                                                       Map<String,Object> wishlistMap = new HashMap<>();
+                                                       wishlistMap.put("list_size",(long) 0);
+
+                                                       Map<String,Object> ratingsMap = new HashMap<>();
+                                                       ratingsMap.put("list_size",(long) 0);
+                                                       ///MAPS
+
+                                                       List<String> documentNames = new ArrayList<>();
+                                                       documentNames.add("MY_WISHLIST");
+                                                       documentNames.add("MY_RATINGS");
+
+                                                       List<Map<String,Object>> documentFields = new ArrayList<>();
+                                                       documentFields.add(wishlistMap);
+                                                       documentFields.add(ratingsMap);
+
+                                                       for (int x = 0;x < documentNames.size();x++){
+                                                           int finalX = x;
+                                                           userDataReference.document(documentNames.get(x))
+                                                                   .set(documentFields.get(x)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                               @Override
+                                                               public void onComplete(@NonNull Task<Void> task) {
+                                                                   if (task.isSuccessful()){
+                                                                       if (finalX == documentNames.size() -1) {
+                                                                           mainIntent();
+                                                                       }
+                                                                   }else{
+                                                                       progressBar.setVisibility(View.INVISIBLE);
+                                                                       signUpBtn.setEnabled(true);
+                                                                       signUpBtn.setTextColor(Color.rgb(255,255,255));
+                                                                       String error = task.getException().getMessage();
+                                                                       Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                                                                   }
                                                                }
-                                                           }
-                                                       });
+                                                           });
+                                                       }
                                                    }else{
                                                        String error = task.getException().getMessage();
                                                        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
                                                    }
                                                }
                                            });
-
                                }else{
                                    progressBar.setVisibility(View.GONE);
                                    signUpBtn.setEnabled(true);
@@ -274,14 +296,12 @@ public class SignUpFragment extends Fragment {
                                }
                             }
                         });
-
             }else{
                 confirmPassword.setError("Password doesn't matched!",customErrorIcon);
             }
         }else{
             email.setError("Invalid Email!",customErrorIcon);
         }
-
     }
     private void mainIntent(){
         if (disableCloseBtn){
@@ -292,5 +312,4 @@ public class SignUpFragment extends Fragment {
         }
         getActivity().finish();
     }
-
 }

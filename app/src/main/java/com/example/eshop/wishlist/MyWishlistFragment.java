@@ -51,6 +51,7 @@ public class MyWishlistFragment extends Fragment {
         ////loading dialog
 
         wishlistRecyclerView = view.findViewById(R.id.my_wishlist_recyclerview);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         wishlistRecyclerView.setLayoutManager(linearLayoutManager);

@@ -41,8 +41,10 @@ public class DBQueries {
     public static List<String> wishList = new ArrayList<>();
     public static List<WishlistModel> wishlistModelList = new ArrayList<>();
 
-    public static void loadCategories(CategoryAdapter categoryAdapter, Context context) {
+    public static List<String> myRatedIds = new ArrayList<>();
+    public static List<Long> myRating = new ArrayList<>();
 
+    public static void loadCategories(CategoryAdapter categoryAdapter, Context context) {
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -60,7 +62,7 @@ public class DBQueries {
                     }
                 });
     }
-    public static void loadFragmentData(HomePageAdapter adapter,Context context, final int index,String categoryName){
+    public static void loadFragmentData(HomePageAdapter adapter, Context context, final int index, String categoryName) {
         firebaseFirestore.collection("CATEGORIES")
                 .document(categoryName.toUpperCase())
                 .collection("TOP_DEALS").orderBy("index").get()
@@ -97,16 +99,16 @@ public class DBQueries {
                                                 , documentSnapshot.get("product_subtitle_" + x).toString()
                                                 , documentSnapshot.get("product_price_" + x).toString()));
 
-                                        viewAllProductList.add(new WishlistModel(documentSnapshot.get("product_image_"+x).toString()
+                                        viewAllProductList.add(new WishlistModel(documentSnapshot.get("product_ID_" + x).toString(), documentSnapshot.get("product_image_" + x).toString()
                                                 , documentSnapshot.get("product_full_title_" + x).toString()
-                                                , (long)documentSnapshot.get("free_coupons_" + x)
+                                                , (long) documentSnapshot.get("free_coupons_" + x)
                                                 , documentSnapshot.get("average_rating_" + x).toString()
-                                                ,(long)documentSnapshot.get("total_ratings_" + x)
+                                                , (long) documentSnapshot.get("total_ratings_" + x)
                                                 , documentSnapshot.get("product_price_" + x).toString()
                                                 , documentSnapshot.get("cutted_price_" + x).toString()
-                                                , (boolean)documentSnapshot.get("COD_" + x)));
+                                                , (boolean) documentSnapshot.get("COD_" + x)));
                                     }
-                                    lists.get(index).add(new HomePageModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList,viewAllProductList));
+                                    lists.get(index).add(new HomePageModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList, viewAllProductList));
                                 } else if ((long) documentSnapshot.get("view_type") == 3) {
                                     List<HorizontalProductScrollModel> gridLayoutModelList = new ArrayList<>();
                                     long no_of_products = (long) documentSnapshot.get("no_of_products");
@@ -128,20 +130,22 @@ public class DBQueries {
                     }
                 });
     }
-    public static void loadWishList(Context context, Dialog dialog,final boolean loadProductData){
+
+    public static void loadWishList(Context context, Dialog dialog, final boolean loadProductData) {
+        wishList.clear();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    for (long x = 0;x < (long) task.getResult().get("list_size");x++){
-                        wishList.add(task.getResult().get("product_ID_"+ x).toString());
-                        if (DBQueries.wishList.contains(ProductDetailsActivity.productID)){
+                if (task.isSuccessful()) {
+                    for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
+                        wishList.add(task.getResult().get("product_ID_" + x).toString());
+                        if (DBQueries.wishList.contains(ProductDetailsActivity.productID)) {
                             ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = true;
                             if (ProductDetailsActivity.addToWishListBtn != null) {
                                 ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
                             }
-                        }else{
+                        } else {
                             if (ProductDetailsActivity.addToWishListBtn != null) {
                                 ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
                                 ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = false;
@@ -149,12 +153,14 @@ public class DBQueries {
                         }
 
                         if (loadProductData) {
-                            firebaseFirestore.collection("PRODUCTS").document(task.getResult().get("product_ID_" + x).toString())
+                            wishlistModelList.clear();
+                            String productId = task.getResult().get("product_ID_" + x).toString();
+                            firebaseFirestore.collection("PRODUCTS").document(productId)
                                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        wishlistModelList.add(new WishlistModel(task.getResult().get("product_image_1").toString()
+                                        wishlistModelList.add(new WishlistModel(productId, task.getResult().get("product_image_1").toString()
                                                 , task.getResult().get("product_title").toString()
                                                 , (long) task.getResult().get("free_coupons")
                                                 , task.getResult().get("average_rating").toString()
@@ -172,7 +178,7 @@ public class DBQueries {
                             });
                         }
                     }
-                }else{
+                } else {
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
@@ -180,42 +186,63 @@ public class DBQueries {
             }
         });
     }
-    public static void removeFromWishList(int index, Context context){
+    public static void removeFromWishList(int index, Context context) {
 
         wishList.remove(index);
-        Map<String,Object> updateWishlist = new HashMap<>();
-        for (int x = 0;x < wishList.size();x++){
-            updateWishlist.put("product_ID_" + x,wishList.get(x));
+        Map<String, Object> updateWishlist = new HashMap<>();
+        for (int x = 0; x < wishList.size(); x++) {
+            updateWishlist.put("product_ID_" + x, wishList.get(x));
         }
-        updateWishlist.put("list_size",(long)wishList.size());
+        updateWishlist.put("list_size", (long) wishList.size());
 
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
                 .set(updateWishlist).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    if (wishlistModelList.size() !=0){
+                if (task.isSuccessful()) {
+                    if (wishlistModelList.size() != 0) {
                         wishlistModelList.remove(index);
                         MyWishlistFragment.wishlistAdapter.notifyDataSetChanged();
                     }
                     ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = false;
                     Toast.makeText(context, "Removed successfully!", Toast.LENGTH_SHORT).show();
-                }else{
-                    if (ProductDetailsActivity.addToWishListBtn !=null) {
+                } else {
+                    if (ProductDetailsActivity.addToWishListBtn != null) {
                         ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
                     }
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
-                if (ProductDetailsActivity.addToWishListBtn != null) {
-                    ProductDetailsActivity.addToWishListBtn.setEnabled(true);
-                }
+                ProductDetailsActivity.running_wishlist_query = false;
             }
         });
 
     }
 
-    public static void clearData(){
+    public static void loadRatingList(Context context){
+        myRatedIds.clear();
+        myRating.clear();
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_RATINGS")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    for (long x = 0;x < (long) task.getResult().get("list_size");x++){
+                        myRatedIds.add(task.getResult().get("product_ID_"+x).toString());
+                        myRating.add((long)task.getResult().get("rating_"+x));
+                        if (task.getResult().get("product_ID_"+x).toString().equals(ProductDetailsActivity.productID) && ProductDetailsActivity.rateNowContainer != null){
+                            ProductDetailsActivity.setRating(Integer.parseInt(String.valueOf((long)task.getResult().get("rating_"+x)))-1);
+                        }
+                    }
+                }else{
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public static void clearData() {
         categoryModelList.clear();
         lists.clear();
         loadedCategoriesNames.clear();
