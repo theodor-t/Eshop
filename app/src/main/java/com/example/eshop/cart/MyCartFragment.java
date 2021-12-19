@@ -35,6 +35,7 @@ public class MyCartFragment extends Fragment {
     private Button continueBtn;
     private Dialog loadingDialog;
     public static CartAdapter cartAdapter;
+    private TextView totalAmount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class MyCartFragment extends Fragment {
 
         cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
         continueBtn = view.findViewById(R.id.cart_continue_btn);
+        totalAmount = view.findViewById(R.id.total_cart_amount);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -73,7 +75,7 @@ public class MyCartFragment extends Fragment {
         }
 
 
-        cartAdapter = new CartAdapter(DBQueries.cartItemModelList);
+        cartAdapter = new CartAdapter(DBQueries.cartItemModelList,totalAmount);
         cartItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
 

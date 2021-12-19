@@ -255,6 +255,8 @@ public class SignUpFragment extends Fragment {
                                                        Map<String,Object> cartMap = new HashMap<>();
                                                        cartMap.put("list_size",(long) 0);
 
+//                                                       Map<String,Object> cartMap = new HashMap<>();
+//                                                       cartMap.put("list_size",(long) 0);
 
                                                        ///MAPS
 
