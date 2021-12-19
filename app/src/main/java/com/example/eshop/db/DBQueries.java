@@ -3,6 +3,8 @@ package com.example.eshop.db;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -67,6 +69,7 @@ public class DBQueries {
                     }
                 });
     }
+
     public static void loadFragmentData(HomePageAdapter adapter, Context context, final int index, String categoryName) {
         firebaseFirestore.collection("CATEGORIES")
                 .document(categoryName.toUpperCase())
@@ -191,6 +194,7 @@ public class DBQueries {
             }
         });
     }
+
     public static void removeFromWishList(int index, Context context) {
         String removedProductId = wishList.get(index);
         wishList.remove(index);
@@ -215,7 +219,7 @@ public class DBQueries {
                     if (ProductDetailsActivity.addToWishListBtn != null) {
                         ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(255, 0, 0));
                     }
-                    wishList.add(index,removedProductId);
+                    wishList.add(index, removedProductId);
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
@@ -225,7 +229,7 @@ public class DBQueries {
 
     }
 
-    public static void loadRatingList(Context context){
+    public static void loadRatingList(Context context) {
         if (!ProductDetailsActivity.running_rating_query) {
             ProductDetailsActivity.running_rating_query = true;
             myRatedIds.clear();
@@ -240,7 +244,7 @@ public class DBQueries {
                             myRating.add((long) task.getResult().get("rating_" + x));
                             if (task.getResult().get("product_ID_" + x).toString().equals(ProductDetailsActivity.productID)) {
                                 ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((long) task.getResult().get("rating_" + x))) - 1;
-                                if (ProductDetailsActivity.rateNowContainer !=  null) {
+                                if (ProductDetailsActivity.rateNowContainer != null) {
                                     ProductDetailsActivity.setRating(ProductDetailsActivity.initialRating);
                                 }
                             }
@@ -255,7 +259,7 @@ public class DBQueries {
         }
     }
 
-    public static void loadCartList(final Context context,Dialog dialog,boolean loadProductData){
+    public static void loadCartList(final Context context, Dialog dialog, boolean loadProductData, final TextView badgeCount) {
         cartList.clear();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_CART")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -279,15 +283,25 @@ public class DBQueries {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM,productId, task.getResult().get("product_image_1").toString()
+                                        int index = 0;
+                                        if (cartList.size() >= 2) {
+                                            index = cartList.size() - 2;
+                                        }
+                                        cartItemModelList.add(index, new CartItemModel(CartItemModel.CART_ITEM, productId, task.getResult().get("product_image_1").toString()
                                                 , task.getResult().get("product_title").toString()
                                                 , (long) task.getResult().get("free_coupons")
                                                 , task.getResult().get("product_price").toString()
                                                 , task.getResult().get("cutted_price").toString()
-                                                , (long)1
-                                                , (long)0
-                                                , (long)0));
+                                                , (long) 1
+                                                , (long) 0
+                                                , (long) 0));
 
+                                        if (cartList.size() == 1) {
+                                            cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
+                                        }
+                                        if (cartList.size() == 0) {
+                                            cartItemModelList.clear();
+                                        }
                                         MyCartFragment.cartAdapter.notifyDataSetChanged();
                                     } else {
                                         String error = task.getException().getMessage();
@@ -296,6 +310,16 @@ public class DBQueries {
                                 }
                             });
                         }
+                    }
+                    if (cartList.size() != 0) {
+                        badgeCount.setVisibility(View.VISIBLE);
+                    } else {
+                        badgeCount.setVisibility(View.INVISIBLE);
+                    }
+                    if (DBQueries.cartList.size() < 99) {
+                        badgeCount.setText(String.valueOf(DBQueries.cartList.size()));
+                    } else {
+                        badgeCount.setText("99");
                     }
                 } else {
                     String error = task.getException().getMessage();
@@ -325,12 +349,13 @@ public class DBQueries {
                         cartItemModelList.remove(index);
                         MyCartFragment.cartAdapter.notifyDataSetChanged();
                     }
-                    if (ProductDetailsActivity.cartItem != null) {
-                        ProductDetailsActivity.cartItem.setActionView(null);
+                    if (cartList.size() == 0) {
+                        cartItemModelList.clear();
                     }
+
                     Toast.makeText(context, "Removed successfully!", Toast.LENGTH_SHORT).show();
                 } else {
-                    cartList.add(index,removedProductId);
+                    cartList.add(index, removedProductId);
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
@@ -346,5 +371,7 @@ public class DBQueries {
         loadedCategoriesNames.clear();
         wishList.clear();
         wishlistModelList.clear();
+        cartList.clear();
+        cartItemModelList.clear();
     }
 }

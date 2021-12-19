@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.eshop.MainActivity;
 import com.example.eshop.R;
 import com.example.eshop.address.AddAddressActivity;
 import com.example.eshop.db.DBQueries;
@@ -65,7 +67,7 @@ public class MyCartFragment extends Fragment {
 
         if (DBQueries.cartItemModelList.size() == 0) {
             DBQueries.cartList.clear();
-            DBQueries.loadCartList(getContext(), loadingDialog, true);
+            DBQueries.loadCartList(getContext(), loadingDialog, true,new TextView(getContext()));
         } else {
             loadingDialog.dismiss();
         }

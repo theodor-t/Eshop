@@ -29,6 +29,7 @@ import com.example.eshop.db.DBQueries;
 import com.example.eshop.home.HomeFragment;
 import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.orders.MyOrdersFragment;
+import com.example.eshop.product.ProductDetailsActivity;
 import com.example.eshop.rewards.MyRewardsFragment;
 import com.example.eshop.wishlist.MyWishlistFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private Dialog signInDialog;
     private FirebaseUser currentUser;
+    private TextView badgeCount;
 
     public static DrawerLayout drawer;
 
@@ -151,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStart() {
         super.onStart();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null){
+        if (currentUser == null) {
             navigationView.getMenu().getItem(navigationView.getMenu().size() - 1).setEnabled(false);
-        }else{
+        } else {
             navigationView.getMenu().getItem(navigationView.getMenu().size() - 1).setEnabled(true);
         }
         invalidateOptionsMenu();
@@ -191,30 +193,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getMenuInflater().inflate(R.menu.main, menu);
 
             MenuItem cartItem = menu.findItem(R.id.main_cart_icon);
-            if (DBQueries.cartList.size() > 0){
-                cartItem.setActionView(R.layout.badge_layout);
-                ImageView badgeIcon = cartItem.getActionView().findViewById(R.id.badge_icon);
-                badgeIcon.setImageResource(R.mipmap.cart_white);
-                TextView badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
-                if (DBQueries.cartList.size() < 99) {
-                    badgeCount.setText(String.valueOf(DBQueries.cartList.size()));
-                }else{
-                    badgeCount.setText("99");
-                }
-
-                cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (currentUser == null) {
-                            signInDialog.show();
-                        }else {
-                            gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
-                        }
+            cartItem.setActionView(R.layout.badge_layout);
+            ImageView badgeIcon = cartItem.getActionView().findViewById(R.id.badge_icon);
+            badgeIcon.setImageResource(R.mipmap.cart_white);
+            badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
+            if (currentUser != null) {
+                if (DBQueries.cartList.size() == 0) {
+                    DBQueries.loadCartList(MainActivity.this, new Dialog(MainActivity.this), false, badgeCount);
+                } else {
+                    badgeCount.setVisibility(View.VISIBLE);
+                    if (DBQueries.cartList.size() < 99) {
+                        badgeCount.setText(String.valueOf(DBQueries.cartList.size()));
+                    } else {
+                        badgeCount.setText("99");
                     }
-                });
-            }else{
-                cartItem.setActionView(null);
+                }
             }
+            cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (currentUser == null) {
+                        signInDialog.show();
+                    } else {
+                        gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
+                    }
+                }
+            });
         }
         return true;
     }
@@ -232,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.main_cart_icon) {
             if (currentUser == null) {
                 signInDialog.show();
-            }else {
+            } else {
                 gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
             }
             return true;
@@ -286,13 +290,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else if (id == R.id.nav_sign_out) {
                 FirebaseAuth.getInstance().signOut();
                 DBQueries.clearData();
-                Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
+                Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(registerIntent);
                 finish();
             }
             drawer.closeDrawer(GravityCompat.START);
             return true;
-        }else{
+        } else {
             drawer.closeDrawer(GravityCompat.START);
             signInDialog.show();
             return false;

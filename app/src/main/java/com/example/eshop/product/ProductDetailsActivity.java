@@ -119,6 +119,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private Dialog loadingDialog;
     private FirebaseUser currentUser;
     public static String productID;
+    private TextView badgeCount;
 
     private DocumentSnapshot documentSnapshot;
 
@@ -239,7 +240,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             DBQueries.loadRatingList(ProductDetailsActivity.this);
                         }
                         if (DBQueries.cartList.size() == 0) {
-                            DBQueries.loadCartList(ProductDetailsActivity.this, loadingDialog, false);
+                            DBQueries.loadCartList(ProductDetailsActivity.this, loadingDialog, false, badgeCount);
                         }
                         if (DBQueries.wishList.size() == 0) {
                             DBQueries.loadWishList(ProductDetailsActivity.this, loadingDialog, false);
@@ -634,9 +635,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             if (DBQueries.myRating.size() == 0) {
                 DBQueries.loadRatingList(ProductDetailsActivity.this);
             }
-            if (DBQueries.cartList.size() == 0) {
-                DBQueries.loadCartList(ProductDetailsActivity.this, loadingDialog, false);
-            }
             if (DBQueries.wishList.size() == 0) {
                 DBQueries.loadWishList(ProductDetailsActivity.this, loadingDialog, false);
             } else {
@@ -663,6 +661,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
             ALREADY_ADDED_TO_WISHLIST = false;
         }
+        invalidateOptionsMenu();
     }
 
     public static void showDialogRecyclerView() {
@@ -704,32 +703,34 @@ public class ProductDetailsActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.search_and_cart_icon, menu);
         cartItem = menu.findItem(R.id.main_cart_icon);
-        if (DBQueries.cartList.size() > 0) {
-            cartItem.setActionView(R.layout.badge_layout);
-            ImageView badgeIcon = cartItem.getActionView().findViewById(R.id.badge_icon);
-            badgeIcon.setImageResource(R.mipmap.cart_white);
-            TextView badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
-            if (DBQueries.cartList.size() < 99) {
-                badgeCount.setText(String.valueOf(DBQueries.cartList.size()));
-            }else{
-                badgeCount.setText("99");
-            }
-
-            cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (currentUser == null) {
-                        signInDialog.show();
-                    } else {
-                        Intent cartIntent = new Intent(ProductDetailsActivity.this, MainActivity.class);
-                        showCart = true;
-                        startActivity(cartIntent);
-                    }
+        cartItem.setActionView(R.layout.badge_layout);
+        ImageView badgeIcon = cartItem.getActionView().findViewById(R.id.badge_icon);
+        badgeIcon.setImageResource(R.mipmap.cart_white);
+        badgeCount = cartItem.getActionView().findViewById(R.id.badge_count);
+        if (currentUser != null) {
+            if (DBQueries.cartList.size() == 0) {
+                DBQueries.loadCartList(ProductDetailsActivity.this, loadingDialog, false, badgeCount);
+            } else {
+                badgeCount.setVisibility(View.VISIBLE);
+                if (DBQueries.cartList.size() < 99) {
+                    badgeCount.setText(String.valueOf(DBQueries.cartList.size()));
+                } else {
+                    badgeCount.setText("99");
                 }
-            });
-        } else {
-            cartItem.setActionView(null);
+            }
         }
+        cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentUser == null) {
+                    signInDialog.show();
+                } else {
+                    Intent cartIntent = new Intent(ProductDetailsActivity.this, MainActivity.class);
+                    showCart = true;
+                    startActivity(cartIntent);
+                }
+            }
+        });
         return true;
     }
 

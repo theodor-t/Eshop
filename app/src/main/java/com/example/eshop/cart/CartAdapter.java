@@ -72,20 +72,37 @@ public class CartAdapter extends RecyclerView.Adapter {
                 String productPrice = cartItemModelList.get(position).getProductPrice();
                 String cuttedPrice = cartItemModelList.get(position).getCuttedPrice();
                 Long offersApplied = cartItemModelList.get(position).getOffersApplied();
-                ((CartItemViewholder) viewHolder).setItemDetails(productID,resource, title, freeCoupons, productPrice, cuttedPrice, offersApplied,position);
+                ((CartItemViewholder) viewHolder).setItemDetails(productID, resource, title, freeCoupons, productPrice, cuttedPrice, offersApplied, position);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
-                String totalItems = cartItemModelList.get(position).getTotalItems();
-                String totalItemPrice = cartItemModelList.get(position).getTotalItemPrice();
-                String deliveryPrice = cartItemModelList.get(position).getDeliveryPrice();
-                String totalAmount = cartItemModelList.get(position).getTotalAmount();
-                String savedAmount = cartItemModelList.get(position).getSavedAmount();
+                int totalItems = 0;
+                int totalItemPrice = 0;
+                String deliveryPrice;
+                int totalAmount;
+                int savedAmount = 0;
+
+                for (int x = 0; x < cartItemModelList.size(); x++) {
+
+                    if (cartItemModelList.get(x).getType() == CartItemModel.CART_ITEM) {
+                        totalItems++;
+                        totalItemPrice = totalItemPrice + Integer.parseInt(cartItemModelList.get(x).getProductPrice());
+
+                    }
+
+                }
+                if (totalItemPrice > 500) {
+                    deliveryPrice = "FREE";
+                    totalAmount = totalItemPrice;
+                } else {
+                    deliveryPrice = "50";
+                    totalAmount = totalItemPrice + 50;
+                }
                 ((CartTotalAmountViewholder) viewHolder).setTotalAmount(totalItems, totalItemPrice, deliveryPrice, totalAmount, savedAmount);
                 break;
             default:
                 return;
         }
-        if (lastPosition <  position) {
+        if (lastPosition < position) {
             Animation animation = AnimationUtils.loadAnimation(viewHolder.itemView.getContext(), R.anim.fade_in);
             viewHolder.itemView.setAnimation(animation);
             lastPosition = position;
@@ -127,7 +144,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             deleteBtn = itemView.findViewById(R.id.remove_item_btn);
         }
 
-        private void setItemDetails(String productID,String resource, String title, Long freeCouponsNo, String productPriceText, String cuttedPriceText, Long offersAppliedNo,int position) {
+        private void setItemDetails(String productID, String resource, String title, Long freeCouponsNo, String productPriceText, String cuttedPriceText, Long offersAppliedNo, int position) {
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.placeholder)).into(productImage);
             productTitle.setText(title);
             if (freeCouponsNo > 0) {
@@ -156,7 +173,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                     Dialog quantityDialog = new Dialog(itemView.getContext());
                     quantityDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     quantityDialog.setContentView(R.layout.quantity_dialog);
-                    quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     quantityDialog.setCancelable(false);
                     EditText quantityNo = quantityDialog.findViewById(R.id.quantity_no);
                     Button cancelBtn = quantityDialog.findViewById(R.id.cancel_btn);
@@ -183,10 +200,10 @@ public class CartAdapter extends RecyclerView.Adapter {
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!ProductDetailsActivity.running_cart_query){
+                    if (!ProductDetailsActivity.running_cart_query) {
                         ProductDetailsActivity.running_cart_query = true;
 
-                        DBQueries.removeFromCart(position,itemView.getContext());
+                        DBQueries.removeFromCart(position, itemView.getContext());
                     }
                 }
             });
@@ -213,13 +230,16 @@ public class CartAdapter extends RecyclerView.Adapter {
             savedAmount = itemView.findViewById(R.id.saved_amount);
         }
 
-        private void setTotalAmount(String totalItemText, String totalItemPriceText, String deliveryPriceText, String totalAmountText, String savedAmountText) {
-            totalItems.setText(totalItemText);
-            totalItemPrice.setText(totalItemPriceText);
-            deliveryPrice.setText(deliveryPriceText);
-            totalAmount.setText(totalAmountText);
-            savedAmount.setText(savedAmountText);
-
+        private void setTotalAmount(int totalItemText, int totalItemPriceText, String deliveryPriceText, int totalAmountText, int savedAmountText) {
+            totalItems.setText("Price(" + totalItemText + " items)");
+            totalItemPrice.setText(totalItemPriceText + " MDL");
+            if (deliveryPriceText.equals("FREE")) {
+                deliveryPrice.setText(deliveryPriceText);
+            } else {
+                deliveryPrice.setText(deliveryPriceText + " MDL");
+            }
+            totalAmount.setText(totalAmountText + " MDL");
+            savedAmount.setText("You saved " + savedAmountText + " MDL on this order");
         }
     }
 }
