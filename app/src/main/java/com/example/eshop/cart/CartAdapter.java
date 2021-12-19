@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,12 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.eshop.R;
+import com.example.eshop.db.DBQueries;
+import com.example.eshop.product.ProductDetailsActivity;
 
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter {
 
     private List<CartItemModel> cartItemModelList;
+    private int lastPosition = -1;
 
     public CartAdapter(List<CartItemModel> cartItemModelList) {
         this.cartItemModelList = cartItemModelList;
@@ -66,7 +72,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 String productPrice = cartItemModelList.get(position).getProductPrice();
                 String cuttedPrice = cartItemModelList.get(position).getCuttedPrice();
                 Long offersApplied = cartItemModelList.get(position).getOffersApplied();
-                ((CartItemViewholder) viewHolder).setItemDetails(productID,resource, title, freeCoupons, productPrice, cuttedPrice, offersApplied);
+                ((CartItemViewholder) viewHolder).setItemDetails(productID,resource, title, freeCoupons, productPrice, cuttedPrice, offersApplied,position);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
                 String totalItems = cartItemModelList.get(position).getTotalItems();
@@ -78,6 +84,11 @@ public class CartAdapter extends RecyclerView.Adapter {
                 break;
             default:
                 return;
+        }
+        if (lastPosition <  position) {
+            Animation animation = AnimationUtils.loadAnimation(viewHolder.itemView.getContext(), R.anim.fade_in);
+            viewHolder.itemView.setAnimation(animation);
+            lastPosition = position;
         }
     }
 
@@ -98,6 +109,8 @@ public class CartAdapter extends RecyclerView.Adapter {
         private TextView couponsApplied;
         private TextView productQuantity;
 
+        private LinearLayout deleteBtn;
+
         public CartItemViewholder(@NonNull View itemView) {
             super(itemView);
 
@@ -110,9 +123,11 @@ public class CartAdapter extends RecyclerView.Adapter {
             offersApplied = itemView.findViewById(R.id.offers_applied);
             couponsApplied = itemView.findViewById(R.id.coupons_applied);
             productQuantity = itemView.findViewById(R.id.product_quantity);
+
+            deleteBtn = itemView.findViewById(R.id.remove_item_btn);
         }
 
-        private void setItemDetails(String productID,String resource, String title, Long freeCouponsNo, String productPriceText, String cuttedPriceText, Long offersAppliedNo) {
+        private void setItemDetails(String productID,String resource, String title, Long freeCouponsNo, String productPriceText, String cuttedPriceText, Long offersAppliedNo,int position) {
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.placeholder)).into(productImage);
             productTitle.setText(title);
             if (freeCouponsNo > 0) {
@@ -162,6 +177,17 @@ public class CartAdapter extends RecyclerView.Adapter {
                         }
                     });
                     quantityDialog.show();
+                }
+            });
+
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!ProductDetailsActivity.running_cart_query){
+                        ProductDetailsActivity.running_cart_query = true;
+
+                        DBQueries.removeFromCart(position,itemView.getContext());
+                    }
                 }
             });
 
