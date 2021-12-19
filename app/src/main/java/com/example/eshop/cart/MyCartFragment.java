@@ -82,9 +82,8 @@ public class MyCartFragment extends Fragment {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent deliveryIntent = new Intent(getContext(), AddAddressActivity.class);
-                getContext().startActivity(deliveryIntent);
-
+                loadingDialog.show();
+                DBQueries.loadAddresses(getContext(),loadingDialog);
             }
         });
 

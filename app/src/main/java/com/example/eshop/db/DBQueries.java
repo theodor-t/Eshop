@@ -2,17 +2,22 @@ package com.example.eshop.db;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.eshop.address.AddAddressActivity;
+import com.example.eshop.address.AddressesModel;
 import com.example.eshop.cart.CartItemModel;
 import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.category.CategoryAdapter;
 import com.example.eshop.category.CategoryModel;
+import com.example.eshop.delivery.DeliveryActivity;
 import com.example.eshop.home.HomePageAdapter;
 import com.example.eshop.home.HomePageModel;
 import com.example.eshop.product.HorizontalProductScrollModel;
@@ -50,6 +55,10 @@ public class DBQueries {
 
     public static List<String> cartList = new ArrayList<>();
     public static List<CartItemModel> cartItemModelList = new ArrayList<>();
+
+    public static int selectedAddress = -1;
+    public static List<AddressesModel> addressesModelList = new ArrayList<>();
+
 
     public static void loadCategories(CategoryAdapter categoryAdapter, Context context) {
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
@@ -363,6 +372,39 @@ public class DBQueries {
             }
         });
 
+    }
+
+    public static void loadAddresses(Context context, Dialog loadingDialog) {
+
+        addressesModelList.clear();
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_ADDRESSES")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Intent deliveryIntent;
+                    if ((long) task.getResult().get("list_size") == 0) {
+                        deliveryIntent = new Intent(context, AddAddressActivity.class);
+                    } else {
+                        for (long x = 1; x < (long) task.getResult().get("list_size") + 1;x++){
+                            addressesModelList.add(new AddressesModel(task.getResult().get("fullname_"+x).toString(),
+                                    task.getResult().get("address_"+x).toString(),
+                                    task.getResult().get("pincode_"+x).toString(),
+                                    (boolean)task.getResult().get("selected_"+x)));
+                            if ((boolean)task.getResult().get("selected_"+x)){
+                                selectedAddress = Integer.parseInt(String.valueOf(x - 1));
+                            }
+                        }
+                        deliveryIntent = new Intent(context, DeliveryActivity.class);
+                    }
+                    context.startActivity(deliveryIntent);
+                } else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+                loadingDialog.dismiss();
+            }
+        });
     }
 
     public static void clearData() {
