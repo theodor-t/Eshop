@@ -1,5 +1,6 @@
 package com.example.eshop.cart;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,11 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 
 import com.example.eshop.R;
 import com.example.eshop.address.AddAddressActivity;
+import com.example.eshop.db.DBQueries;
 import com.example.eshop.delivery.DeliveryActivity;
+import com.example.eshop.wishlist.WishlistAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,8 @@ public class MyCartFragment extends Fragment {
 
     private RecyclerView cartItemsRecyclerView;
     private Button continueBtn;
+    private Dialog loadingDialog;
+    public static CartAdapter cartAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,31 +45,44 @@ public class MyCartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_cart, container, false);
 
-            cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
-            continueBtn = view.findViewById(R.id.cart_continue_btn);
+        ////loading dialog
+        loadingDialog = new Dialog(getContext());
+        loadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loadingDialog.setContentView(R.layout.loading_progress_dialog);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        loadingDialog.show();
+        ////loading dialog
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            cartItemsRecyclerView.setLayoutManager(layoutManager);
 
-            List<CartItemModel> cartItemModelList = new ArrayList<>();
-            cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 2, "MDL 8999", "MDL 13000", 1, 0, 1));
-            cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 0, "MDL 8999", "MDL 13000", 1, 1, 0));
-            cartItemModelList.add(new CartItemModel(0, R.drawable.product_image, "Iphone XR", 2, "MDL 8999", "MDL 13000", 1, 2, 0));
-            cartItemModelList.add(new CartItemModel(1, "Price (3 items)", "MDL 48000", "Free", "MDL 5000", "45000"));
+        cartItemsRecyclerView = view.findViewById(R.id.cart_items_recyclerview);
+        continueBtn = view.findViewById(R.id.cart_continue_btn);
 
-            CartAdapter cartAdapter = new CartAdapter(cartItemModelList);
-            cartItemsRecyclerView.setAdapter(cartAdapter);
-            cartAdapter.notifyDataSetChanged();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        cartItemsRecyclerView.setLayoutManager(layoutManager);
 
-            continueBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent deliveryIntent = new Intent(getContext(), AddAddressActivity.class);
-                    getContext().startActivity(deliveryIntent);
+        if (DBQueries.cartItemModelList.size() == 0) {
+            DBQueries.cartList.clear();
+            DBQueries.loadCartList(getContext(), loadingDialog, true);
+        } else {
+            loadingDialog.dismiss();
+        }
 
-                }
-            });
+
+        cartAdapter = new CartAdapter(DBQueries.cartItemModelList);
+        cartItemsRecyclerView.setAdapter(cartAdapter);
+        cartAdapter.notifyDataSetChanged();
+
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent deliveryIntent = new Intent(getContext(), AddAddressActivity.class);
+                getContext().startActivity(deliveryIntent);
+
+            }
+        });
 
         return view;
     }

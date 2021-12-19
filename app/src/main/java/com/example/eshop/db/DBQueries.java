@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.eshop.cart.CartItemModel;
+import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.category.CategoryAdapter;
 import com.example.eshop.category.CategoryModel;
 import com.example.eshop.home.HomePageAdapter;
@@ -43,6 +45,9 @@ public class DBQueries {
 
     public static List<String> myRatedIds = new ArrayList<>();
     public static List<Long> myRating = new ArrayList<>();
+
+    public static List<String> cartList = new ArrayList<>();
+    public static List<CartItemModel> cartItemModelList = new ArrayList<>();
 
     public static void loadCategories(CategoryAdapter categoryAdapter, Context context) {
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
@@ -148,8 +153,8 @@ public class DBQueries {
                         } else {
                             if (ProductDetailsActivity.addToWishListBtn != null) {
                                 ProductDetailsActivity.addToWishListBtn.setColorFilter(Color.rgb(192, 192, 192));
-                                ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = false;
                             }
+                            ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = false;
                         }
 
                         if (loadProductData) {
@@ -247,6 +252,58 @@ public class DBQueries {
                 }
             });
         }
+    }
+
+    public static void loadCartList(final Context context,Dialog dialog,boolean loadProductData){
+        cartList.clear();
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_CART")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
+                        cartList.add(task.getResult().get("product_ID_" + x).toString());
+                        if (DBQueries.cartList.contains(ProductDetailsActivity.productID)) {
+                            ProductDetailsActivity.ALREADY_ADDED_TO_CART = true;
+
+                        } else {
+                            ProductDetailsActivity.ALREADY_ADDED_TO_CART = false;
+                        }
+
+                        if (loadProductData) {
+                            cartItemModelList.clear();
+                            String productId = task.getResult().get("product_ID_" + x).toString();
+                            firebaseFirestore.collection("PRODUCTS").document(productId)
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        cartItemModelList.add(new CartItemModel(CartItemModel.CART_ITEM,productId, task.getResult().get("product_image_1").toString()
+                                                , task.getResult().get("product_title").toString()
+                                                , (long) task.getResult().get("free_coupons")
+                                                , task.getResult().get("product_price").toString()
+                                                , task.getResult().get("cutted_price").toString()
+                                                , (long)1
+                                                , (long)0
+                                                , (long)0));
+
+                                        MyCartFragment.cartAdapter.notifyDataSetChanged();
+                                    } else {
+                                        String error = task.getException().getMessage();
+                                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+        });
+
     }
 
     public static void clearData() {
