@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +42,7 @@ public class MyAddressesActivity extends AppCompatActivity {
     private RecyclerView myAddressesRecyclerView;
     private Button deliverHere;
     private static AddressesAdapter addressesAdapter;
+    private Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,15 @@ public class MyAddressesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("My Addresses");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ////loading dialog
+        loadingDialog = new Dialog(this);
+        loadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        loadingDialog.setContentView(R.layout.loading_progress_dialog);
+        loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setBackgroundDrawable(this.getDrawable(R.drawable.slider_background));
+        loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ////loading dialog
 
         previousAddress = DBQueries.selectedAddress;
 
@@ -73,7 +86,7 @@ public class MyAddressesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (DBQueries.selectedAddress != previousAddress){
                     int previousAddressIndex = previousAddress;
-
+                    loadingDialog.show();
                     Map<String,Object> updateSelection = new HashMap<>();
                     updateSelection.put("selected_"+ String.valueOf(previousAddress +1),false);
                     updateSelection.put("selected_"+ String.valueOf(DBQueries.selectedAddress +1),true);
@@ -91,8 +104,11 @@ public class MyAddressesActivity extends AppCompatActivity {
                                 String error = task.getException().getMessage();
                                 Toast.makeText(MyAddressesActivity.this, error, Toast.LENGTH_SHORT).show();
                             }
+                            loadingDialog.dismiss();
                         }
                     });
+                }else{
+                    finish();
                 }
             }
         });
@@ -111,10 +127,15 @@ public class MyAddressesActivity extends AppCompatActivity {
                 startActivity(addAddressIntent);
             }
         });
-        addressesSaved.setText(String.valueOf(DBQueries.addressesModelList.size())+" saved addresses");
     }
 
-    public static void refreshItem(int select,int deselect){
+    @Override
+    protected void onStart() {
+        addressesSaved.setText(String.valueOf(DBQueries.addressesModelList.size())+" saved addresses");
+        super.onStart();
+    }
+
+    public static void refreshItem(int select, int deselect){
         addressesAdapter.notifyItemChanged(deselect);
         addressesAdapter.notifyItemChanged(select);
     }
@@ -122,9 +143,24 @@ public class MyAddressesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home){
+            if (DBQueries.selectedAddress != previousAddress){
+                DBQueries.addressesModelList.get(DBQueries.selectedAddress).setSelected(false);
+                DBQueries.addressesModelList.get(previousAddress).setSelected(true);
+                DBQueries.selectedAddress = previousAddress;
+            }
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (DBQueries.selectedAddress != previousAddress){
+            DBQueries.addressesModelList.get(DBQueries.selectedAddress).setSelected(false);
+            DBQueries.addressesModelList.get(previousAddress).setSelected(true);
+            DBQueries.selectedAddress = previousAddress;
+        }
+        super.onBackPressed();
     }
 }

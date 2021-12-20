@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eshop.R;
+import com.example.eshop.db.DBQueries;
 
 import java.util.List;
 
@@ -22,11 +23,12 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
 
     private List<AddressesModel> addressesModelList;
     private int MODE;
-    private int preSelectedPosition = -1;
+    private int preSelectedPosition;
 
     public AddressesAdapter(List<AddressesModel> addressesModelList, int MODE) {
         this.addressesModelList = addressesModelList;
         this.MODE = MODE;
+        preSelectedPosition = DBQueries.selectedAddress;
     }
 
     @NonNull
@@ -89,6 +91,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
                             addressesModelList.get(preSelectedPosition).setSelected(false);
                             refreshItem(preSelectedPosition, position);
                             preSelectedPosition = position;
+                            DBQueries.selectedAddress = position;
                         }
                     }
                 });
@@ -100,7 +103,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
                     @Override
                     public void onClick(View view) {
                         optionContainer.setVisibility(View.VISIBLE);
-                        refreshItem(preSelectedPosition,preSelectedPosition);
+                        refreshItem(preSelectedPosition, preSelectedPosition);
                         preSelectedPosition = position;
 
                     }
@@ -108,7 +111,7 @@ public class AddressesAdapter extends RecyclerView.Adapter<AddressesAdapter.View
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        refreshItem(preSelectedPosition,preSelectedPosition);
+                        refreshItem(preSelectedPosition, preSelectedPosition);
                         preSelectedPosition = -1;
                     }
                 });

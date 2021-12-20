@@ -32,6 +32,7 @@ import com.example.eshop.orders.MyOrdersFragment;
 import com.example.eshop.product.ProductDetailsActivity;
 import com.example.eshop.rewards.MyRewardsFragment;
 import com.example.eshop.wishlist.MyWishlistFragment;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -72,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Dialog signInDialog;
     private FirebaseUser currentUser;
     private TextView badgeCount;
+    private int scrollFrags;
+    private AppBarLayout.LayoutParams params;
 
     public static DrawerLayout drawer;
 
@@ -87,8 +90,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        navigationView = findViewById(R.id.nav_view);
+        params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        scrollFrags = params.getScrollFlags();
         drawer = findViewById(R.id.drawer_layout);
+
+        navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -258,6 +264,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setFragment(fragment, fragmentNo);
         if (fragmentNo == CART_FRAGMENT) {
             navigationView.getMenu().getItem(3).setChecked(true);
+            params.setScrollFlags(0);
+        }else{
+            params.setScrollFlags(scrollFrags);
         }
     }
 

@@ -139,11 +139,13 @@ public class AddAddressActivity extends AppCompatActivity {
                                                     } else {
                                                         DBQueries.addressesModelList.add(new AddressesModel(name.getText().toString() + " - " + mobileNo.getText().toString() + " or " + alternateMobileNo.getText().toString(), fullAddress, pincode.getText().toString(), true));
                                                     }
-                                                    DBQueries.selectedAddress = DBQueries.addressesModelList.size() - 1;
                                                     if (getIntent().getStringExtra("INTENT").equals("deliveryIntent")) {
                                                         Intent deliveryIntent = new Intent(AddAddressActivity.this, DeliveryActivity.class);
                                                         startActivity(deliveryIntent);
+                                                    }else{
+                                                        MyAddressesActivity.refreshItem(DBQueries.selectedAddress,DBQueries.addressesModelList.size() - 1);
                                                     }
+                                                    DBQueries.selectedAddress = DBQueries.addressesModelList.size() - 1;
                                                     finish();
                                                 } else {
                                                     String error = task.getException().getMessage();
