@@ -24,6 +24,7 @@
 
         android:elevation="8dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -60,6 +61,10 @@
             android:id="@+id/cart_continue_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="1"
             android:background="@color/purple_500"
             android:text="Continue"

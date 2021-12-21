@@ -268,7 +268,7 @@ public class DBQueries {
         }
     }
 
-    public static void loadCartList(final Context context, Dialog dialog, boolean loadProductData, final TextView badgeCount) {
+    public static void loadCartList(final Context context, Dialog dialog, boolean loadProductData, final TextView badgeCount,final TextView cartTotalAmount) {
         cartList.clear();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_CART")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -308,6 +308,8 @@ public class DBQueries {
 
                                         if (cartList.size() == 1) {
                                             cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
+                                            LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
+                                            parent.setVisibility(View.VISIBLE);
                                         }
                                         if (cartList.size() == 0) {
                                             cartItemModelList.clear();
@@ -341,7 +343,7 @@ public class DBQueries {
 
     }
 
-    public static void removeFromCart(int index, Context context) {
+    public static void removeFromCart(int index, Context context,TextView cartTotalAmount) {
         String removedProductId = cartList.get(index);
         cartList.remove(index);
         Map<String, Object> updateCartList = new HashMap<>();
@@ -360,6 +362,8 @@ public class DBQueries {
                         MyCartFragment.cartAdapter.notifyDataSetChanged();
                     }
                     if (cartList.size() == 0) {
+                        LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
+                        parent.setVisibility(View.GONE);
                         cartItemModelList.clear();
                     }
 
