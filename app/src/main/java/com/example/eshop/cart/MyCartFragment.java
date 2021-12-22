@@ -69,17 +69,6 @@ public class MyCartFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartItemsRecyclerView.setLayoutManager(layoutManager);
 
-        if (DBQueries.cartItemModelList.size() == 0) {
-            DBQueries.cartList.clear();
-            DBQueries.loadCartList(getContext(), loadingDialog, true,new TextView(getContext()),totalAmount);
-        } else {
-            if (DBQueries.cartItemModelList.get(DBQueries.cartItemModelList.size()-1).getType() == CartItemModel.TOTAL_AMOUNT){
-                LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
-                parent.setVisibility(View.VISIBLE);
-            }
-            loadingDialog.dismiss();
-        }
-
         cartAdapter = new CartAdapter(DBQueries.cartItemModelList,totalAmount,true);
         cartItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
@@ -88,7 +77,7 @@ public class MyCartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 DeliveryActivity.cartItemModelList = new ArrayList<>();
-
+                DeliveryActivity.fromCart = true;
                 for (int x = 0;x< DBQueries.cartItemModelList.size();x++){
                     CartItemModel cartItemModel = DBQueries.cartItemModelList.get(x);
                     if (cartItemModel.isInStock()){
@@ -109,5 +98,20 @@ public class MyCartFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (DBQueries.cartItemModelList.size() == 0) {
+            DBQueries.cartList.clear();
+            DBQueries.loadCartList(getContext(), loadingDialog, true,new TextView(getContext()),totalAmount);
+        } else {
+            if (DBQueries.cartItemModelList.get(DBQueries.cartItemModelList.size()-1).getType() == CartItemModel.TOTAL_AMOUNT){
+                LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
+                parent.setVisibility(View.VISIBLE);
+            }
+            loadingDialog.dismiss();
+        }
     }
 }

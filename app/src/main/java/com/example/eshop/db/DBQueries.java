@@ -123,7 +123,8 @@ public class DBQueries {
                                                 , (long) documentSnapshot.get("total_ratings_" + x)
                                                 , documentSnapshot.get("product_price_" + x).toString()
                                                 , documentSnapshot.get("cutted_price_" + x).toString()
-                                                , (boolean) documentSnapshot.get("COD_" + x)));
+                                                , (boolean) documentSnapshot.get("COD_" + x)
+                                                ,(boolean) documentSnapshot.get("in_stock_" + x)));
                                     }
                                     lists.get(index).add(new HomePageModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList, viewAllProductList));
                                 } else if ((long) documentSnapshot.get("view_type") == 3) {
@@ -184,7 +185,8 @@ public class DBQueries {
                                                 , (long) task.getResult().get("total_ratings")
                                                 , task.getResult().get("product_price").toString()
                                                 , task.getResult().get("cutted_price").toString()
-                                                , (boolean) task.getResult().get("COD")));
+                                                , (boolean) task.getResult().get("COD")
+                                                ,(boolean) task.getResult().get("in_stock")));
 
                                         MyWishlistFragment.wishlistAdapter.notifyDataSetChanged();
                                     } else {
@@ -421,5 +423,8 @@ public class DBQueries {
         wishlistModelList.clear();
         cartList.clear();
         cartItemModelList.clear();
+        myRatedIds.clear();
+        myRating.clear();
+        addressesModelList.clear();
     }
 }

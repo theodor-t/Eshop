@@ -18,12 +18,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.eshop.MainActivity;
 import com.example.eshop.R;
 import com.example.eshop.address.MyAddressesActivity;
 import com.example.eshop.cart.CartAdapter;
 import com.example.eshop.cart.CartItemModel;
 import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.db.DBQueries;
+import com.example.eshop.product.ProductDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +45,9 @@ public class DeliveryActivity extends AppCompatActivity {
     private Dialog paymentMethodDialog;
     private ImageButton paytm;
     private ConstraintLayout orderConfirmationLayout;
-    private ImageButton continueShopping;
+    private ImageButton continueShoppingBtn;
     private TextView orderId;
+    public static boolean fromCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +67,8 @@ public class DeliveryActivity extends AppCompatActivity {
         pincode = findViewById(R.id.pincode);
         continueBtn = findViewById(R.id.cart_continue_btn);
         orderConfirmationLayout = findViewById(R.id.order_confirmation_layout);
-        continueShopping = findViewById(R.id.continue_shopping_btn);
-        orderId = findViewById(R.id.order_id);
+        continueShoppingBtn = findViewById(R.id.continue_shopping_btn);
+
 
         ////loading dialog
         loadingDialog = new Dialog(DeliveryActivity.this);
@@ -108,8 +111,8 @@ public class DeliveryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 paymentMethodDialog.show();
                 paytm = paymentMethodDialog.findViewById(R.id.paytm);
-
             }
+
         });
     }
 
