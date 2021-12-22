@@ -119,7 +119,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 totalRatings.setVisibility(View.VISIBLE);
                 productPrice.setTextColor(Color.parseColor("#000000"));
                 cuttedPrice.setVisibility(View.VISIBLE);
-                linearLayout.setVisibility(View.INVISIBLE);
+                linearLayout.setVisibility(View.VISIBLE);
 
                 rating.setText(averageRate);
                 totalRatings.setText("(" + totalRatingsNo + ") ratings");

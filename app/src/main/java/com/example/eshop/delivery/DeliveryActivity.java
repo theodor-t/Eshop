@@ -26,6 +26,7 @@ import com.example.eshop.cart.CartItemModel;
 import com.example.eshop.cart.MyCartFragment;
 import com.example.eshop.db.DBQueries;
 import com.example.eshop.product.ProductDetailsActivity;
+import com.example.eshop.splash.SplashActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class DeliveryActivity extends AppCompatActivity {
     private Button continueBtn;
     private Dialog loadingDialog;
     private Dialog paymentMethodDialog;
-    private ImageButton paytm;
+    private ImageButton paytm,cod;
     private ConstraintLayout orderConfirmationLayout;
     private ImageButton continueShoppingBtn;
     private TextView orderId;
@@ -86,7 +87,10 @@ public class DeliveryActivity extends AppCompatActivity {
         paymentMethodDialog.setCancelable(true);
         paymentMethodDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_background));
         paymentMethodDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        paytm = paymentMethodDialog.findViewById(R.id.paytm);
+        cod = paymentMethodDialog.findViewById(R.id.cod_btn);
         ////Payment method dialog
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -110,9 +114,22 @@ public class DeliveryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 paymentMethodDialog.show();
-                paytm = paymentMethodDialog.findViewById(R.id.paytm);
             }
-
+        });
+        cod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                orderConfirmationLayout.setVisibility(View.VISIBLE);
+                paymentMethodDialog.dismiss();
+            }
+        });
+        continueShoppingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mainIntent = new Intent(DeliveryActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                finish();
+            }
         });
     }
 
