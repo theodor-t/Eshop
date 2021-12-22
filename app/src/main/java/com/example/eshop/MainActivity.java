@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().getItem(0).setChecked(true);
 
         frameLayout = findViewById(R.id.main_framelayout);
+
         setFragment(new HomeFragment(), HOME_FRAGMENT);
         if (showCart) {
             mainActivity = this;

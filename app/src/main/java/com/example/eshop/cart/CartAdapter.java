@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -176,34 +177,38 @@ public class CartAdapter extends RecyclerView.Adapter {
                 cuttedPrice.setText(cuttedPriceText + " MDL");
                 couponRedemptionLayout.setVisibility(View.VISIBLE);
 
-                productQuantity.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Dialog quantityDialog = new Dialog(itemView.getContext());
-                        quantityDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        quantityDialog.setContentView(R.layout.quantity_dialog);
-                        quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        quantityDialog.setCancelable(false);
-                        EditText quantityNo = quantityDialog.findViewById(R.id.quantity_no);
-                        Button cancelBtn = quantityDialog.findViewById(R.id.cancel_btn);
-                        Button okBtn = quantityDialog.findViewById(R.id.ok_btn);
+                productQuantity.setOnClickListener(view -> {
+                    Dialog quantityDialog = new Dialog(itemView.getContext());
+                    quantityDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    quantityDialog.setContentView(R.layout.quantity_dialog);
+                    quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    quantityDialog.setCancelable(false);
+                    EditText quantityNo = quantityDialog.findViewById(R.id.quantity_no);
+                    Button cancelBtn = quantityDialog.findViewById(R.id.cancel_btn);
+                    Button okBtn = quantityDialog.findViewById(R.id.ok_btn);
 
-                        cancelBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                quantityDialog.dismiss();
-                            }
-                        });
+                    cancelBtn.setOnClickListener(view12 -> quantityDialog.dismiss());
 
-                        okBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                    okBtn.setOnClickListener(view1 -> {
+                        if (quantityNo.getText() == null || quantityNo.getText().length() == 0) {
+                            Toast.makeText(view1.getContext(), "Please insert correct value", Toast.LENGTH_SHORT).show();
+                        } else {
+                            try  {
+                                int quantity = Integer.parseInt(quantityNo.getText().toString());
                                 productQuantity.setText("Qty: " + quantityNo.getText());
+                                int productPriceIntValue = Integer.parseInt(productPriceText);
+
+                                productPrice.setText(quantity * productPriceIntValue + " MDL");
                                 quantityDialog.dismiss();
+
+
+                            } catch (Exception e) {
+                                Toast.makeText(view1.getContext(), "Please insert correct value", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                        quantityDialog.show();
-                    }
+                        }
+
+                    });
+                    quantityDialog.show();
                 });
                 if (offersAppliedNo > 0) {
                     offersApplied.setVisibility(View.VISIBLE);
